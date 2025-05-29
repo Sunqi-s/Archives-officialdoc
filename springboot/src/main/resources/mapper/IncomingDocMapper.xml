@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.IncomingDocMapper">
+
+    <!-- 通用字段映射 -->
+    <sql id="Base_Column_List">
+        id, doc_type, receive_date, contact_person, sender_org, contact_phone,
+        secret_level, annual, copies, urgency_level, page_count, title, document_type,
+        box_no, file_no, sender_doc_no, feedback_required, process_type, archive_no,
+        handling_org, attachment_id, creator, create_date, updater, update_date, archive_date,
+        secret_type, status
+    </sql>
+
+    <!-- 新增收文 -->
+    <insert id="insert" parameterType="com.example.entity.IncomingDoc" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO doc_incoming_doc
+        (doc_type, receive_date, contact_person, sender_org, contact_phone,
+         secret_level, annual, copies, urgency_level, page_count, title, document_type,
+         box_no, file_no, sender_doc_no, feedback_required, process_type, archive_no,
+         handling_org, attachment_id, creator, create_date, updater, update_date, archive_date,
+         secret_type, status)
+        VALUES
+            (#{docType}, #{receiveDate}, #{contactPerson}, #{senderOrg}, #{contactPhone},
+             #{secretLevel}, #{annual}, #{copies}, #{urgencyLevel}, #{pageCount}, #{title}, #{documentType},
+             #{boxNo}, #{fileNo}, #{senderDocNo}, #{feedbackRequired}, #{processType}, #{archiveNo},
+             #{handlingOrg}, #{attachmentId}, #{creator}, #{createDate}, #{updater}, #{updateDate}, #{archiveDate},
+             #{secretType}, #{status})
+    </insert>
+
+    <!-- 根据ID删除收文 -->
+    <delete id="deleteById">
+        DELETE FROM doc_incoming_doc WHERE id = #{id}
+    </delete>
+
+    <!-- 更新收文信息 -->
+    <update id="updateById" parameterType="com.example.entity.IncomingDoc">
+        UPDATE doc_incoming_doc
+        <set>
+            <!-- 字符串类型字段：判断非空且非空字符串 -->
+            <if test="docType != null and docType != ''">doc_type = #{docType},</if>
+            <if test="receiveDate != null">receive_date = #{receiveDate},</if>
+            <if test="contactPerson != null and contactPerson != ''">contact_person = #{contactPerson},</if>
+            <if test="senderOrg != null and senderOrg != ''">sender_org = #{senderOrg},</if>
+            <if test="contactPhone != null and contactPhone != ''">contact_phone = #{contactPhone},</if>
+            <if test="secretLevel != null and secretLevel != ''">secret_level = #{secretLevel},</if>
+            <if test="annual != null">annual = #{annual},</if>
+            <if test="copies != null">copies = #{copies},</if>
+            <if test="urgencyLevel != null and urgencyLevel != ''">urgency_level = #{urgencyLevel},</if>
+            <if test="pageCount != null">page_count = #{pageCount},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="documentType != null and documentType != ''">document_type = #{documentType},</if>
+            <if test="boxNo != null and boxNo != ''">box_no = #{boxNo},</if>
+            <if test="fileNo != null">file_no = #{fileNo},</if>
+            <if test="senderDocNo != null and senderDocNo != ''">sender_doc_no = #{senderDocNo},</if>
+            <if test="feedbackRequired != null">feedback_required = #{feedbackRequired},</if>
+            <if test="processType != null and processType != ''">process_type = #{processType},</if>
+            <if test="archiveNo != null and archiveNo != ''">archive_no = #{archiveNo},</if>
+            <if test="handlingOrg != null and handlingOrg != ''">handling_org = #{handlingOrg},</if>
+            <if test="attachmentId != null">attachment_id = #{attachmentId},</if>
+            <if test="updater != null">updater = #{updater},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            <if test="archiveDate != null">archive_date = #{archiveDate},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <!-- 根据ID查询收文 -->
+    <select id="selectById" resultType="com.example.entity.IncomingDoc">
+        SELECT <include refid="Base_Column_List" />
+        FROM doc_incoming_doc
+        WHERE id = #{id}
+    </select>
+
+    <!-- 根据来文编号查询收文（唯一性校验） -->
+    <select id="selectBySenderDocNo" resultType="com.example.entity.IncomingDoc">
+        SELECT <include refid="Base_Column_List" />
+        FROM doc_incoming_doc
+        WHERE sender_doc_no = #{senderDocNo}
+    </select>
+
+    <!-- 查询收文关联的流转意见 -->
+    <select id="selectOpinionsByDocId" resultType="com.example.entity.IncomingOpinion">
+        SELECT
+            *
+        FROM doc_incoming_opinion
+        WHERE doc_id = #{docId}
+        ORDER BY create_date ASC
+    </select>
+
+    <!-- 动态条件分页查询收文列表 -->
+    <select id="selectPageList" resultType="com.example.entity.IncomingDoc">
+        SELECT <include refid="Base_Column_List" />
+        FROM doc_incoming_doc
+        <where>
+            <if test="query.title != null and query.title != ''">
+                AND title LIKE CONCAT('%', #{query.title}, '%')
+            </if>
+            <if test="query.senderOrg != null and query.senderOrg != ''">
+                AND sender_org LIKE CONCAT('%', #{query.senderOrg}, '%')
+            </if>
+            <if test="query.secretType != null">
+                AND secret_type = #{query.secretType}
+            </if>
+            <if test="query.status != null">
+                AND status = #{query.status}
+            </if>
+            <if test="query.processType != null and query.processType != ''">
+                AND process_type = #{query.processType}
+            </if>
+            <if test="query.secretLevel != null and query.secretLevel != ''">
+                AND secret_level = #{query.secretLevel}
+            </if>
+            <if test="query.urgencyLevel != null and query.urgencyLevel != ''">
+                AND urgency_level = #{query.urgencyLevel}
+            </if>
+            <if test="query.feedbackRequired != null">
+                AND feedback_required = #{query.feedbackRequired}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+</mapper>

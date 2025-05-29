@@ -1,0 +1,178 @@
+.manager-container {
+    background-color: #f8f8ff;
+    min-height: 100vh;
+}
+
+.manager-header {
+    display: flex;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影效果 */
+}
+
+.manager-header-left {
+    width: 330px; /* 加宽宽度以显示完整标题 */
+    height: 60px;
+    padding-left: 20px; /* 增加左侧内边距 */
+    display: flex;
+    align-items: center;
+}
+
+.manager-header-left img {
+    width: 40px;
+    height: 40px;
+}
+
+.manager-header-left .title {
+    flex: 1;
+    margin-left: 10px; /* 增加左侧边距 */
+    font-size: 25px; /* 增大字体大小 */
+    font-weight: bold;
+    color: #1881bc; /* 将标题颜色改为蓝色 */
+}
+
+.manager-header-center {
+    flex: 1;
+    width: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 20px; /* 增加左侧内边距 */
+}
+
+.manager-header-right {
+    width: 250px; /* 适当加宽右侧部分 */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px; /* 增加右侧内边距 */
+}
+
+.manager-header-right .avatar {
+    display: flex;
+    align-items: center;
+    color: #666; /* 调整文字颜色 */
+    cursor: default;
+}
+
+.manager-header-right .avatar img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px; /* 增加右侧边距 */
+}
+
+.el-breadcrumb__inner {
+    color: #666 !important; /* 调整面包屑文字颜色 */
+}
+
+.el-dropdown-menu {
+    margin-top: 10px !important; /* 调整下拉菜单的顶部边距 */
+}
+
+.manager-main {
+    display: flex;
+}
+
+.manager-main-left {
+    width: 200px;
+    min-height: calc(100vh - 60px);
+    box-shadow: 0 0 6px rgba(0, 21, 41, .35);
+}
+
+.manager-main-right {
+    flex: 1;
+    width: 0;
+    padding: 10px;
+}
+
+.manager-main-right .search {
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.manager-main-right .operation {
+    margin-top: 5px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1)
+}
+
+.manager-main-right .table {
+    margin-top: 5px;
+    padding: 15px 10px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+}
+
+.manager-main-right .table .pagination {
+    margin-top: 10px;
+}
+
+.card {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* ElementUI */
+.el-menu {
+    width: 200px;
+    height: 100%;
+    background-color: #ffffff; /* 修改为白色背景 */
+}
+
+.el-submenu__title {
+    color: #333; /* 修改为深色文字 */
+    height: 50px;
+    line-height: 50px;
+    background-color: #ffffff; /* 修改为白色背景 */
+}
+
+.el-menu-item {
+    color: #333; /* 修改为深色文字 */
+    height: 50px;
+    line-height: 50px;
+    background-color: #ffffff !important; /* 修改为白色背景 */
+}
+
+.el-menu-item.is-active {
+    background-color: #e0e0e0 !important; /* 修改激活状态背景色为浅灰色 */
+    color: #3399ff !important;
+}
+
+.el-menu--inline .el-menu-item {
+    padding-left: 50px !important;
+}
+
+.el-menu .is-active {
+    color: #3399ff !important;
+}
+
+.el-submenu__title:hover {
+    background-color: #f0f0f0 !important; /* 修改悬停背景色为更浅的灰色 */
+}
+
+.el-menu-item:not(.is-active):hover {
+    background-color: #f0f0f0 !important; /* 修改悬停背景色为更浅的灰色 */
+}
+
+.el-menu-item:hover {
+    background-color: #f0f0f0 !important; /* 修改悬停背景色为更浅的灰色 */
+}
+
+.el-submenu__icon-arrow {
+    margin-top: -5px;
+}
+
+.el-breadcrumb {
+    margin-left: 10px;
+}
+
+th.el-table__cell {
+    background-color: #f8f8f8 !important;
+    color: #666;
+}

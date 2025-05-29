@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.DocTypeMapper">
+
+    <sql id="Base_Column_List">
+        id, name, creator, create_date, updater, update_date
+    </sql>
+
+    <insert id="insert" parameterType="com.example.entity.DocType">
+        INSERT INTO doc_type
+            (name, creator, create_date, updater, update_date)
+        VALUES
+            (#{name}, #{creator}, #{createDate}, #{updater}, #{updateDate})
+    </insert>
+
+    <delete id="deleteById">
+        DELETE FROM doc_type WHERE id = #{id}
+    </delete>
+
+    <update id="updateById" parameterType="com.example.entity.DocType">
+        UPDATE doc_type
+        <set>
+            name = #{name},
+            updater = #{updater},
+            update_date = #{updateDate}
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectById" resultType="com.example.entity.DocType">
+        SELECT <include refid="Base_Column_List" />
+        FROM doc_type
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectPageList" resultType="com.example.entity.DocType">
+        SELECT <include refid="Base_Column_List" />
+        FROM doc_type
+        <where>
+            <if test="name != null and name != ''">
+                AND name LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+    <select id="selectAll" resultType="com.example.entity.DocType">
+        SELECT <include refid="Base_Column_List" />
+        FROM doc_type
+        ORDER BY name ASC
+    </select>
+</mapper>

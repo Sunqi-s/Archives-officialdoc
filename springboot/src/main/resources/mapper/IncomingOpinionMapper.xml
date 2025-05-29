@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.IncomingOpinionMapper">
+    <insert id="insert" parameterType="com.example.entity.IncomingOpinion">
+        INSERT INTO doc_incoming_opinion
+        (doc_id, object_id, opinion, next_object_id, opinion_type,
+         creator, create_date, name, position, level)
+        VALUES
+            (#{docId}, #{objectId}, #{opinion}, #{nextObjectId}, #{opinionType},
+             #{creator}, #{createDate}, #{name}, #{position}, #{level})
+    </insert>
+
+    <select id="selectById" resultType="com.example.entity.IncomingOpinion">
+        SELECT * FROM doc_incoming_opinion WHERE id = #{id}
+    </select>
+
+    <select id="selectByDocId" resultType="com.example.entity.IncomingOpinion">
+        SELECT * FROM doc_incoming_opinion WHERE doc_id = #{docId} ORDER BY create_date ASC
+    </select>
+
+    <update id="updateById" parameterType="com.example.entity.IncomingOpinion">
+        UPDATE doc_incoming_opinion
+        SET opinion = #{opinion}, next_object_id = #{nextObjectId}, opinion_type = #{opinionType},
+            updater = #{updater}, update_date = #{updateDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM doc_incoming_opinion WHERE id = #{id}
+    </delete>
+</mapper>

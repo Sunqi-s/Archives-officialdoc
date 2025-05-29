@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.HomeMapper">
+
+    <select id="getHomeStatistics" resultType="java.util.HashMap">
+        SELECT
+            -- 本月发文统计
+            (SELECT COUNT(*) FROM doc_outgoing_doc
+             WHERE DATE_FORMAT(create_date, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')) AS monthly_outgoing_count,
+
+            -- 今日发文统计
+            (SELECT COUNT(*) FROM doc_outgoing_doc
+             WHERE DATE(create_date) = CURDATE()) AS today_outgoing_count,
+
+            -- 本月收文统计
+            (SELECT COUNT(*) FROM doc_incoming_doc
+        WHERE DATE_FORMAT(receive_date, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')) AS monthly_incoming_count,
+
+        -- 今日收文统计
+            (SELECT COUNT(*) FROM doc_incoming_doc
+        WHERE DATE(receive_date) = CURDATE()) AS today_incoming_count,
+
+        -- 待审批文件统计（处理类型为'阅办'）
+            (SELECT COUNT(*) FROM doc_incoming_doc
+        WHERE process_type = '阅办') AS pending_count,
+
+        -- 待审批中的紧急文件统计
+            (SELECT COUNT(*) FROM doc_incoming_doc
+        WHERE process_type = '阅办' AND urgency_level = '紧急') AS pending_urgent_count,
+
+        -- 已归档文件统计（处理类型为'存档'）
+            (SELECT COUNT(*) FROM doc_incoming_doc
+        WHERE process_type = '存档') AS archived_count,
+
+        -- 本年度已归档文件统计
+            (SELECT COUNT(*) FROM doc_incoming_doc
+        WHERE process_type = '存档' AND YEAR(archive_date) = YEAR(NOW())) AS archived_year_count
+    </select>
+
+</mapper>
