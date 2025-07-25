@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.OutgoingOpinionMapper">
+
+
+    <insert id="insert" parameterType="com.example.entity.OutgoingOpinion">
+        INSERT INTO doc_outgoing_opinion
+        (doc_id, object_id, opinion, next_object_id, opinion_type,
+         creator, create_date, name, position, level)
+        VALUES
+            (#{docId}, #{objectId}, #{opinion}, #{nextObjectId}, #{opinionType},
+             #{creator}, #{createDate}, #{name}, #{position}, #{level})
+    </insert>
+
+    <update id="updateById">
+        UPDATE doc_outgoing_opinion
+        SET opinion = #{opinion}, next_object_id = #{nextObjectId}, opinion_type = #{opinionType},
+            updater = #{updater}, update_date = #{updateDate}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM doc_outgoing_opinion WHERE id = #{id}
+    </delete>
+
+    <select id="selectById" resultType="com.example.entity.OutgoingOpinion">
+        SELECT * FROM doc_outgoing_opinion WHERE id = #{id}
+    </select>
+
+    <select id="selectByDocId" resultType="com.example.entity.OutgoingOpinion">
+        SELECT * FROM doc_outgoing_opinion WHERE doc_id = #{docId} ORDER BY create_date ASC
+    </select>
+</mapper>

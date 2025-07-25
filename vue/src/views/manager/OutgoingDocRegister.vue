@@ -2,7 +2,7 @@
   <div class="incoming-register">
     <el-card class="register-card" shadow="always">
       <div class="register-header">
-        <h1>收文登记
+        <h1>发文登记
           <span v-if=" this.form.secretType === 1" style="color: red; margin-left: 10px;">(密件)</span>
         </h1>
       </div>
@@ -14,40 +14,40 @@
           class="register-form"
       >
         <div class="form-row">
-          <el-form-item label="来文类型" prop="docType">
-            <el-select v-model="form.docType" placeholder="请选择来文类型">
-              <!-- 动态加载来文类型 -->
-              <el-option
-                  v-for="type in docTypes"
-                  :key="type.id"
-                  :label="type.name"
-                  :value="type.name"
-              ></el-option>
-            </el-select>
-          </el-form-item>
+<!--          <el-form-item label="来文类型" prop="docType">-->
+<!--            <el-select v-model="form.docType" placeholder="请选择来文类型">-->
+<!--              &lt;!&ndash; 动态加载来文类型 &ndash;&gt;-->
+<!--              <el-option-->
+<!--                  v-for="type in docTypes"-->
+<!--                  :key="type.id"-->
+<!--                  :label="type.name"-->
+<!--                  :value="type.name"-->
+<!--              ></el-option>-->
+<!--            </el-select>-->
+<!--          </el-form-item>-->
 
-          <el-form-item label="来文日期" prop="receiveDate">
+          <el-form-item label="发文日期" prop="receiveDate">
             <el-date-picker
-                v-model="form.receiveDate"
+                v-model="form.createDate"
                 type="date"
-                placeholder="选择来文日期"
+                placeholder="选择发文日期"
                 value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
 
-          <el-form-item label="联系人" prop="contactPerson">
-            <el-input v-model="form.contactPerson" placeholder="请输入联系人"></el-input>
-          </el-form-item>
+<!--          <el-form-item label="联系人" prop="contactPerson">-->
+<!--            <el-input v-model="form.contactPerson" placeholder="请输入联系人"></el-input>-->
+<!--          </el-form-item>-->
         </div>
 
         <div class="form-row">
-          <el-form-item label="来文单位" prop="senderOrg" >
-            <el-input v-model="form.senderOrg" placeholder="请输入来文单位" required></el-input>
+          <el-form-item label="发文单位" prop="senderOrg" >
+            <el-input v-model="form.senderOrg" placeholder="请输入发文单位" required></el-input>
           </el-form-item>
 
-          <el-form-item label="联系电话" prop="contactPhone">
-            <el-input v-model="form.contactPhone" placeholder="请输入联系电话" pattern="^1[3-9]\d{9}$"></el-input>
-          </el-form-item>
+<!--          <el-form-item label="联系电话" prop="contactPhone">-->
+<!--            <el-input v-model="form.contactPhone" placeholder="请输入联系电话" pattern="^1[3-9]\d{9}$"></el-input>-->
+<!--          </el-form-item>-->
 
         </div>
 
@@ -62,15 +62,15 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="年度" prop="annual">
-            <el-input v-model.number="form.annual" placeholder="请输入年度（如2025）" type="number"></el-input>
+          <el-form-item label="件号" prop="fileNo">
+            <el-input v-model.number="form.fileNo" placeholder="请输入件号" type="number"></el-input>
           </el-form-item>
-          <el-form-item label="份数" prop="copies">
-            <el-input v-model.number="form.copies" placeholder="请输入文件份数" type="number"></el-input>
-          </el-form-item>
+<!--          <el-form-item label="份数" prop="copies">-->
+<!--            <el-input v-model.number="form.copies" placeholder="请输入文件份数" type="number"></el-input>-->
+<!--          </el-form-item>-->
 
-          <el-form-item label="紧急程度" prop="urgencyLevel">
-            <el-select v-model="form.urgencyLevel" placeholder="请选择紧急程度">
+          <el-form-item label="紧急程度" prop="secretLevel">
+            <el-select v-model="form.secretLevel" placeholder="请选择紧急程度">
               <el-option label="普通" value="普通"></el-option>
               <el-option label="平急" value="平急"></el-option>
               <el-option label="加急" value="加急"></el-option>
@@ -89,16 +89,16 @@
             <el-input type="textarea" v-model="form.title" placeholder="请输入文件标题" rows="3"></el-input>
           </el-form-item>
 
-          <el-form-item label="文种/期号" prop="documentType">
-            <el-input v-model="form.documentType" placeholder="如“函〔2025〕1号”"></el-input>
-          </el-form-item>
+<!--          <el-form-item label="文种/期号" prop="documentType">-->
+<!--            <el-input v-model="form.documentType" placeholder="如“函〔2025〕1号”"></el-input>-->
+<!--          </el-form-item>-->
 
         </div>
 
         <div class="form-row">
-          <el-form-item label="盒号" prop="boxNo">
-            <el-input v-model="form.boxNo" placeholder="请输入盒号"></el-input>
-          </el-form-item>
+<!--          <el-form-item label="盒号" prop="boxNo">-->
+<!--            <el-input v-model="form.boxNo" placeholder="请输入盒号"></el-input>-->
+<!--          </el-form-item>-->
 
           <el-form-item label="来文编号" prop="senderDocNo">
             <el-input v-model="form.senderDocNo" placeholder="请输入来文编号"></el-input>
@@ -110,10 +110,10 @@
 
           <el-form-item label="限办时间">
             <el-date-picker
-              v-model="form.limitDate"
-              type="datetime"
-              placeholder="选择限办日期"
-              ></el-date-picker>
+                v-model="form.limitDate"
+                type="datetime"
+                placeholder="选择限办日期"
+            ></el-date-picker>
           </el-form-item>
         </div>
 
@@ -122,12 +122,12 @@
           <el-form-item label="处理单类型" prop="processType" >
             <el-select v-model="form.processType" placeholder="请选择处理单类型">
               <el-option label="不打印" value="不打印"></el-option>
-              <el-option label="收文单" value="收文单"></el-option>
+              <el-option label="发文单" value="发文单"></el-option>
             </el-select>
           </el-form-item>
 
-          <el-form-item label="归档号" prop="archiveNo">
-            <el-input v-model="form.archiveNo" placeholder="请输入归档号"></el-input>
+          <el-form-item label="档号" prop="recordNo">
+            <el-input v-model="form.recordNo" placeholder="请输入档号"></el-input>
           </el-form-item>
 
           <el-form-item label="文件内容" prop="attachmentId">
@@ -146,7 +146,7 @@
 
         <div class="form-row full-width">
           <el-form-item label="办件单位">
-            <el-input v-model="form.handlingOrg" readonly value="大连长兴岛经济区管委会办公室"></el-input>
+            <el-input v-model="form.handlingOrg"></el-input>
           </el-form-item>
 
           <el-form-item label="拟办意见" prop="opinion">
@@ -171,12 +171,11 @@ export default {
       docTypes: '',
       form: {
         docType: '',
-        receiveDate: new Date(),
+        createDate: new Date(),
         contactPerson: '',
-        senderOrg: '',
-        contactPhone: '',
+        senderOrg: '大连长兴岛经济区管委会办公室',
+        // contactPhone: '',
         secretLevel: '普通',
-        annual: new Date().getFullYear(),
         copies: 1,
         urgencyLevel: '普通',
         pageCount: null,
@@ -187,19 +186,23 @@ export default {
         senderDocNo: '',
         feedbackRequired: false,
         limitDate: null,
-        processType: '收文单',
+        processType: '发文单',
+        recordNo: '',
+        handlingOrg: '',
         archiveNo: '',
-        handlingOrg: '大连长兴岛经济区管委会办公室',
         opinion: '',
         attachmentId: null, // 附件ID
-        secretType: 0 // 0=普通件，1=密件（通过路由参数传递）
+        secretType: 0, // 0=普通件，1=密件（通过路由参数传递）
+        archiveStatus: '未处理'
       },
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       rules: {
-        docType: [{ required: true, message: '请选择来文类型', trigger: 'change' }],
-        receiveDate: [{ required: true, message: '请选择来文日期', trigger: 'change' }],
+        // docType: [{ required: true, message: '请选择来文类型', trigger: 'change' }],
+        createDate: [{ required: true, message: '请选择发文日期', trigger: 'change' }],
         title: [{ required: true, message: '请输入文件标题', trigger: 'blur' }],
-        senderOrg: [{ required: true, message: '请输入来文单位', trigger: 'blur' }]
+        senderOrg: [{ required: true, message: '请输入发文单位', trigger: 'blur' }],
+        senderDocNo: [{ required: true, message: '请输入来文编号', trigger: 'blur' }],
+        fileNo: [{ required: true, message: '请输入件号', trigger: 'blur' }],
       }
     };
   },
@@ -207,18 +210,18 @@ export default {
     // 初始化时同步计算属性值到表单
     this.resetForm();
     this.form.secretType = parseInt(this.$route.params.secretType);
-    this.loadDocTypes();
+    // this.loadDocTypes();
   },
 
   methods: {
     // 加载来文类型
-    loadDocTypes() {
-      this.$request.get('/docType/all').then(res => {
-        if (res.code === '200') {
-          this.docTypes = res.data;
-        }
-      });
-    },
+    // loadDocTypes() {
+    //   this.$request.get('/docType/all').then(res => {
+    //     if (res.code === '200') {
+    //       this.docTypes = res.data;
+    //     }
+    //   });
+    // },
     handleAttachmentSuccess(response, file) {
       this.form.attachmentId = response.data.id; // 假设后端返回附件ID
     },
@@ -233,9 +236,9 @@ export default {
     submitForm() {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
-          this.$request.post('/incomingDoc/add', this.form).then(res => {
+          this.$request.post('/outgoingDoc/add', this.form).then(res => {
             if (res.code === '200') {
-              this.$message.success('收文登记成功');
+              this.$message.success('发文登记成功');
               this.goBack(this.form.secretType);
             } else {
               this.$message.error(res.msg);
@@ -247,35 +250,33 @@ export default {
     goBack(secretType) {
       // 根据密件类型返回对应的列表页
       const path = secretType === 1
-          ? `/incoming-doc-secret/${secretType}`
-          : `/incoming-doc-normal/${secretType}`;
+          ? `/outgoing-doc-secret/${secretType}`
+          : `/outgoing-doc-normal/${secretType}`;
       console.log(path)
       this.$router.push(path);
     },
     resetForm() {
       this.form = {
-            docType: '',
-            receiveDate: new Date(),
-            contactPerson: '',
-            senderOrg: '',
-            contactPhone: '',
-            secretLevel: '普通',
-            annual: new Date().getFullYear(),
-            copies: 1,
-            urgencyLevel: '普通',
-            pageCount: null,
-            title: '',
-            documentType: '',
-            boxNo: '',
-            fileNo: null,
-            senderDocNo: '',
-            feedbackRequired: false,
-            processType: '收文单',
-            archiveNo: '',
-            handlingOrg: '大连长兴岛经济区管委会办公室',
-            opinion: '',
-            attachmentId: null, // 附件ID
-            secretType: 0 // 0=普通件，1=密件（通过路由参数传递）
+        docType: '',
+        createDate: new Date(),
+        contactPerson: '',
+        senderOrg: '大连长兴岛经济区管委会办公室',
+        secretLevel: '普通',
+        copies: 1,
+        pageCount: null,
+        title: '',
+        documentType: '',
+        boxNo: '',
+        fileNo: null,
+        senderDocNo: '',
+        feedbackRequired: false,
+        processType: '发文单',
+        archiveNo: '',
+        handlingOrg: '',
+        opinion: '',
+        attachmentId: null, // 附件ID
+        secretType: 0, // 0=普通件，1=密件（通过路由参数传递）
+        archiveStatus: '未处理'
       }
     }
   }

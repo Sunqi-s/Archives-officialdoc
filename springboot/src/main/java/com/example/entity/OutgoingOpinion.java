@@ -18,6 +18,10 @@ public class OutgoingOpinion implements Serializable {
     private Date createDate;
     private Integer updater;
     private Date updateDate;
+    private String opinionType;
+    private String name;
+    private String position;
+    private Integer level;
 
     // 扩展字段（非数据库字段）
     private String creatorName;  // 创建人姓名
@@ -118,5 +122,30 @@ public class OutgoingOpinion implements Serializable {
 
     public void setNextObjectName(String nextObjectName) {
         this.nextObjectName = nextObjectName;
+    }
+
+    public String getOpinionType() {
+        return opinionType;
+    }
+    public void setOpinionType(String opinionType) {
+        this.opinionType = opinionType;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getPosition() {
+        return position;
+    }
+    public void setPosition(String position) {
+        this.position = position;
+    }
+    public Integer getLevel() {
+        return level;
+    }
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 }

@@ -42,6 +42,7 @@ public class IncomingDoc implements Serializable {
     private Date updateDate;           // 更新时间
     private Integer secretType;  // 密件类型（0-普通件，1-密件）
     private Integer status;      // 状态（0-待审核，1-流转中，2-已存档）
+    private Date limitDate;
 
     List<IncomingOpinion> opinions;  // 审批意见（前端传递，非数据库字段）
     private String opinion; // 拟办意见（前端传递，非数据库字段）
@@ -285,4 +286,8 @@ public class IncomingDoc implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    public Date getLimitDate() { return limitDate; }
+
+    public void setLimitDate(Date limitDate) { this.limitDate = limitDate; }
 }

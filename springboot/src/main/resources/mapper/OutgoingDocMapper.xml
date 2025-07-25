@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.OutgoingDocMapper">
+
+    <sql id="Base_Column_List">
+        id
+        ,
+        sender_org,
+        title,
+        secret_level,
+        archive_status,
+        archive_date,
+        file_no,
+        record_no,
+        creator,
+        create_date,
+        updater,
+        update_date,
+        limit_date,
+        page_count,
+        process_type,
+        handling_org,
+        attachment_id,
+        secret_type,
+        sender_doc_no,
+        status,
+        feedback_required
+    </sql>
+
+
+    <insert id="insert" parameterType="com.example.entity.OutgoingDoc" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO doc_outgoing_doc (sender_org,
+                                      title,
+                                      secret_level,
+                                      archive_status,
+                                      archive_date,
+                                      file_no,
+                                      record_no,
+                                      creator,
+                                      create_date,
+                                      updater,
+                                      update_date,
+                                      limit_date,
+                                      page_count,
+                                      process_type,
+                                      handling_org,
+                                      attachment_id,
+                                      secret_type,
+                                      sender_doc_no,
+                                      status,
+                                      feedback_required)
+        VALUES (#{senderOrg},
+                #{title},
+                #{secretLevel},
+                #{archiveStatus},
+                #{archiveDate},
+                #{fileNo},
+                #{recordNo},
+                #{creator},
+                #{createDate},
+                #{updater},
+                #{updateDate},
+                #{limitDate},
+                #{pageCount},
+                #{processType},
+                #{handlingOrg},
+                #{attachmentId},
+                #{secretType},
+                #{senderDocNo},
+                #{status},
+                #{feedbackRequired}
+               )
+
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.OutgoingDoc">
+        UPDATE doc_outgoing_doc
+        <set>
+            <!-- 字符串类型字段：判断非空且非空字符串 -->
+            <if test="senderOrg != null and senderOrg != ''">sender_org = #{senderOrg},</if>
+            <if test="secretLevel != null and secretLevel != ''">secret_level = #{secretLevel},</if>
+            <if test="pageCount != null">page_count = #{pageCount},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="senderDocNo != null and senderDocNo != ''">sender_doc_no = #{senderDocNo},</if>
+            <if test="processType != null and processType != ''">process_type = #{processType},</if>
+            <if test="handlingOrg != null and handlingOrg != ''">handling_org = #{handlingOrg},</if>
+            <if test="attachmentId != null">attachment_id = #{attachmentId},</if>
+            <if test="updater != null">updater = #{updater},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+            <if test="archiveDate != null">archive_date = #{archiveDate},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="limitDate != null">limit_date = #{limitDate},</if>
+            <if test="feedbackRequired != null">feedback_required = #{feedbackRequired},</if>
+            <if test="archiveStatus != null">archive_status = #{archiveStatus},</if>
+            <if test="recordNo != null and recordNo != ''">record_no = #{recordNo},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        FROM doc_outgoing_doc
+        WHERE id = #{id}
+    </delete>
+
+    <select id="selectPageList" resultType="com.example.entity.OutgoingDoc">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM doc_outgoing_doc
+        <where>
+            <if test="query.title != null and query.title != ''">
+                AND title LIKE CONCAT('%', #{query.title}, '%')
+            </if>
+            <if test="query.senderOrg != null and query.senderOrg != ''">
+                AND sender_org LIKE CONCAT('%', #{query.senderOrg}, '%')
+            </if>
+            <if test="query.secretType != null">
+                AND secret_type = #{query.secretType}
+            </if>
+            <if test="query.processType != null and query.processType != ''">
+                AND process_type = #{query.processType}
+            </if>
+            <if test="query.secretLevel != null and query.secretLevel != ''">
+                AND secret_level = #{query.secretLevel}
+            </if>
+            <if test="query.archiveDate != null">
+                AND archive_date = #{query.archiveDate}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+    <select id="selectBySenderDocNo" resultType="com.example.entity.OutgoingDoc">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM doc_outgoing_doc
+        WHERE sender_doc_no = #{senderDocNo}
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.OutgoingDoc">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM doc_outgoing_doc
+        WHERE id = #{id}
+    </select>
+    <select id="selectOpinionsByDocId" resultType="com.example.entity.OutgoingOpinion">
+        SELECT
+            *
+        FROM doc_outgoing_opinion
+        WHERE doc_id = #{docId}
+        ORDER BY create_date ASC
+    </select>
+</mapper>

@@ -8,7 +8,7 @@
         secret_level, annual, copies, urgency_level, page_count, title, document_type,
         box_no, file_no, sender_doc_no, feedback_required, process_type, archive_no,
         handling_org, attachment_id, creator, create_date, updater, update_date, archive_date,
-        secret_type, status
+        secret_type, status, limit_date
     </sql>
 
     <!-- 新增收文 -->
@@ -18,13 +18,13 @@
          secret_level, annual, copies, urgency_level, page_count, title, document_type,
          box_no, file_no, sender_doc_no, feedback_required, process_type, archive_no,
          handling_org, attachment_id, creator, create_date, updater, update_date, archive_date,
-         secret_type, status)
+         secret_type, status, limit_date)
         VALUES
             (#{docType}, #{receiveDate}, #{contactPerson}, #{senderOrg}, #{contactPhone},
              #{secretLevel}, #{annual}, #{copies}, #{urgencyLevel}, #{pageCount}, #{title}, #{documentType},
              #{boxNo}, #{fileNo}, #{senderDocNo}, #{feedbackRequired}, #{processType}, #{archiveNo},
              #{handlingOrg}, #{attachmentId}, #{creator}, #{createDate}, #{updater}, #{updateDate}, #{archiveDate},
-             #{secretType}, #{status})
+             #{secretType}, #{status}, #{limitDate})
     </insert>
 
     <!-- 根据ID删除收文 -->
@@ -61,6 +61,7 @@
             <if test="updateDate != null">update_date = #{updateDate},</if>
             <if test="archiveDate != null">archive_date = #{archiveDate},</if>
             <if test="status != null">status = #{status},</if>
+            <if test="limitDate != null">limit_date = #{limitDate},</if>
         </set>
         WHERE id = #{id}
     </update>

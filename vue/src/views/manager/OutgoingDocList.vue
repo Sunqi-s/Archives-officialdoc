@@ -6,8 +6,8 @@
         <el-input v-model="query.title" placeholder="请输入文件标题" style="width: 200px"></el-input>
       </el-form-item>
 
-      <el-form-item label="来文单位">
-        <el-input v-model="query.senderOrg" placeholder="请输入来文单位" style="width: 200px"></el-input>
+      <el-form-item label="发文单位">
+        <el-input v-model="query.senderOrg" placeholder="请输入发文单位" style="width: 200px"></el-input>
       </el-form-item>
 
       <el-form-item label="密级">
@@ -19,26 +19,14 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="紧急程度">
-        <el-select v-model="query.urgencyLevel" placeholder="请选择紧急程度" style="width: 180px">
-          <el-option label="普通" value="普通"></el-option>
-          <el-option label="平急" value="平急"></el-option>
-          <el-option label="加急" value="加急"></el-option>
-          <el-option label="特急" value="特急"></el-option>
-          <el-option label="特提" value="特提"></el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item label="来文日期">
-        <el-date-picker
-            v-model="query.receiveDateRange"
-            type="daterange"
-            range-separator="至"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            style="width: 280px"
-        ></el-date-picker>
-      </el-form-item>
+<!--      <el-form-item label="存档日期">-->
+<!--        <el-date-picker-->
+<!--            v-model="query.archiveDate"-->
+<!--            type="date"-->
+<!--            placeholder="选择日期"-->
+<!--            style="width: 280px"-->
+<!--        ></el-date-picker>-->
+<!--      </el-form-item>-->
 
       <el-form-item>
         <el-button type="info" plain @click="loadData(1)">查询</el-button>
@@ -47,7 +35,7 @@
     </el-form>
 
     <div class="toolbar" style="margin: 20px 0">
-      <el-button type="primary" @click="handleAdd">收文登记</el-button>
+      <el-button type="primary" @click="handleAdd">发文登记</el-button>
       <el-button type="success" @click="handleArchive">批量存档</el-button>
     </div>
 
@@ -59,14 +47,13 @@
         style="width: 100%; margin-top: 20px"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="fileNo" label="文件编号" width="100"></el-table-column>
+      <el-table-column prop="senderDocNo" label="发文编号" width="100"></el-table-column>
       <el-table-column prop="title" label="文件标题" width="220"></el-table-column>
-      <el-table-column prop="senderOrg" label="来文单位" width="180"></el-table-column>
+      <el-table-column prop="senderOrg" label="发文单位" width="180"></el-table-column>
       <el-table-column prop="secretLevel" label="密级" width="100"></el-table-column>
-      <el-table-column prop="urgencyLevel" label="紧急程度" width="120"></el-table-column>
-      <el-table-column prop="receiveDate" label="来文日期" width="120"></el-table-column>
+      <el-table-column prop="archiveDate" label="存档日期" width="120"></el-table-column>
       <el-table-column prop="handlingOrg" label="办件单位" width="180"></el-table-column>
-      <el-table-column prop="processType" label="处理状态" width="80"></el-table-column>
+      <el-table-column prop="archiveStatus" label="处理状态" width="80"></el-table-column>
       <el-table-column label="打印" width="140">
         <template v-slot="scope">
           <el-button type="warning" size="mini" @click="handlePrint(scope.row.id)">打印处理单</el-button>
@@ -107,7 +94,8 @@ export default {
         title: '',          // 文件标题（模糊查询）
         senderOrg: '',      // 来文单位（模糊查询）
         processType: '' ,    // 处理状态（精确查询）
-        secretType: null // 密件类型（0-普通件，1-密件）
+        secretType: null, // 密件类型（0-普通件，1-密件）
+        archiveDate: null
       }
     };
   },
@@ -128,7 +116,7 @@ export default {
     loadData(pageNum) {
       if (pageNum) this.pageNum = pageNum;
       // 调用后端分页接口，传递查询条件、页码、页大小
-      this.$request.get('/incomingDoc/selectPage', {
+      this.$request.get('/outgoingDoc/selectPage', {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
@@ -151,7 +139,8 @@ export default {
         title: '',
         senderOrg: '',
         processType: '',
-        secretType: null // 密件类型（0-普通件，1-密件）
+        secretType: null, // 密件类型（0-普通件，1-密件）
+        archiveDate: null,
       };
       this.loadData(1);  // 重置后重新加载第一页
     },
@@ -162,16 +151,16 @@ export default {
     },
 
     handleAdd() {
-      this.$router.push(`/incoming-doc-register/${this.query.secretType}`);
+      this.$router.push(`/outgoing-doc-register/${this.query.secretType}`);
     },
 
     handleDetail(id) {
-      this.$router.push(`/incoming-doc-detail/${id}`);
+      this.$router.push(`/outgoing-doc-detail/${id}`);
     },
     handleDelete(id) {
       this.$confirm('确定删除该收文？', '提示', { type: 'warning' })
           .then(() => {
-            this.$request.delete(`/incomingDoc/delete/${id}`).then(res => {
+            this.$request.delete(`/outgoingDoc/delete/${id}`).then(res => {
               if (res.code === '200') {
                 this.$message.success('删除成功');
                 this.loadData(this.pageNum);  // 删除后刷新当前页
@@ -191,7 +180,7 @@ export default {
             // 假设后端支持批量存档（需与后端确认接口）
             // 这里示例使用循环调用单个存档接口，实际可优化为批量接口
             Promise.all(this.selectedIds.map(id =>
-                this.$request.put(`/incomingDoc/archive/${id}`)
+                this.$request.put(`/outgoingDoc/archive/${id}`)
             )).then(() => {
               this.$message.success('批量存档成功');
               this.loadData(this.pageNum);  // 刷新当前页
@@ -199,11 +188,11 @@ export default {
           });
     },
     handlePrint(id) {
-        const tpl_name = "收发文新系统.ureport.xml";
-        const pageIndex = 1;     // 页码
-        const renderOption = 1;  // 渲染选项
-        const url = `http://localhost:9090/ureport/preview?_u=mysql:${tpl_name}&_i=${pageIndex}&_r=${renderOption}&ids=${id}`;
-        window.open(url, '_blank');
+      const tpl_name = "收发文新系统.ureport.xml";
+      const pageIndex = 1;     // 页码
+      const renderOption = 1;  // 渲染选项
+      const url = `http://localhost:9090/ureport/preview?_u=mysql:${tpl_name}&_i=${pageIndex}&_r=${renderOption}&ids=${id}`;
+      window.open(url, '_blank');
     },
     handleSelectionChange(rows) {
       this.selectedIds = rows.map(row => row.id);
