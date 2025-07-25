@@ -193,7 +193,8 @@ export default {
         opinion: '',
         attachmentId: null, // 附件ID
         secretType: 0, // 0=普通件，1=密件（通过路由参数传递）
-        archiveStatus: '未处理'
+        archiveStatus: '未处理',
+        file: null // 附件对象
       },
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       rules: {
@@ -224,6 +225,11 @@ export default {
     // },
     handleAttachmentSuccess(response, file) {
       this.form.attachmentId = response.data.id; // 假设后端返回附件ID
+      let attachment = {
+        fileName: file.name,
+        filePath: response.data
+      }
+      this.form.file = attachment;
     },
     handleBeforeUpload(file) {
       const isPDF = file.type === 'application/pdf';
