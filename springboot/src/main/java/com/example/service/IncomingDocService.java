@@ -58,22 +58,21 @@ public class IncomingDocService {
             }
         }
 
+        // 处理附件 - 增加空值检查
+        Integer attachmentId = null;
         Attachment file = doc.getFile();
-        System.out.println("doc: " + doc);
-        System.out.println("file: " + file);
-        Attachment attachment = new Attachment();
-        attachment.setFileName(file.getFileName());
-        attachment.setFileType("收文附件");
-        attachment.setFilePath(file.getFilePath());
-        attachment.setCreateDate(new Date());
-        attachment.setCreator(TokenUtils.getCurrentUser().getId());
+        if (file != null && file.getFilePath() != null) {
+            Attachment attachment = new Attachment();
+            attachment.setFileName(file.getFileName());
+            attachment.setFileType("收文附件");
+            attachment.setFilePath(file.getFilePath());
+            attachment.setCreateDate(new Date());
+            attachment.setCreator(TokenUtils.getCurrentUser().getId());
 
-        // 保存附件信息
-        if (attachment.getFilePath() != null) {
+            // 保存附件信息
             attachmentService.save(attachment);
+            attachmentId = attachment.getId();
         }
-
-        Integer attachmentId = attachment.getId();
         // 自动填充系统字段
         doc.setCreator(TokenUtils.getCurrentUser().getId());
         doc.setCreateDate(new Date());
