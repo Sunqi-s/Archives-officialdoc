@@ -28,10 +28,12 @@ const routes = [
       { path: 'flow-object-list', name: 'FlowObjectList', meta: { name: '流转对象管理' }, component: () => import('../views/manager/FlowObjectList.vue') },
       { path: 'incoming-doc-register/:secretType', name: 'IncomingDocRegister', meta: { name: '收文登记' }, component: () => import('../views/manager/IncomingDocRegister') },
       { path: 'incoming-doc-detail/:id', name: 'IncomingDocDetail', meta: { name: '收文详情' }, component: () => import('../views/manager/IncomingDocDetail') },
+      { path: 'incoming-doc-edit/:id/:secretType', name: 'IncomingDocEdit', meta: { name: '收文编辑' }, component: () => import('../views/manager/IncomingDocEdit') },
       { path: 'incoming-doc-normal/:secretType', name: 'IncomingDocList', meta: { name: '普通收文列表' }, component: () => import('../views/manager/IncomingDocList') },
       { path: 'incoming-doc-secret/:secretType', name: 'IncomingDocList', meta: { name: '密件收文列表' }, component: () => import('../views/manager/IncomingDocList') },
       { path: 'outgoing-doc-register/:secretType', name: 'OutgoingDocRegister', meta: { name: '发文登记' }, component: () => import('../views/manager/OutgoingDocRegister.vue') },
       { path: 'outgoing-doc-detail/:id', name: 'OutgoingDocDetail', meta: { name: '发文详情' }, component: () => import('../views/manager/OutgoingDocDetail.vue') },
+      { path: 'outgoing-doc-edit/:id/:secretType', name: 'OutgoingDocEdit', meta: { name: '发文编辑' }, component: () => import('../views/manager/OutgoingDocEdit.vue') },
       { path: 'outgoing-doc-normal/:secretType', name: 'OutgoingDocList', meta: { name: '普通发文列表' }, component: () => import('../views/manager/OutgoingDocList.vue') },
       { path: 'outgoing-doc-secret/:secretType', name: 'OutgoingDocList', meta: { name: '密件发文列表' }, component: () => import('../views/manager/OutgoingDocList.vue') }
 

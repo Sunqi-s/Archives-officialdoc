@@ -62,6 +62,7 @@
       <el-table-column label="操作" width="180">
         <template v-slot="scope">
           <el-button size="mini" @click="handleDetail(scope.row.id)">详情</el-button>
+          <el-button size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -156,6 +157,9 @@ export default {
 
     handleDetail(id) {
       this.$router.push(`/outgoing-doc-detail/${id}`);
+    },
+    handleEdit(id){
+      this.$router.push(`/outgoing-doc-edit/${id}/${this.query.secretType}`);
     },
     handleDelete(id) {
       this.$confirm('确定删除该收文？', '提示', { type: 'warning' })
