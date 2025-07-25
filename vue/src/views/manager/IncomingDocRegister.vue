@@ -192,7 +192,8 @@ export default {
         handlingOrg: '大连长兴岛经济区管委会办公室',
         opinion: '',
         attachmentId: null, // 附件ID
-        secretType: 0 // 0=普通件，1=密件（通过路由参数传递）
+        secretType: 0, // 0=普通件，1=密件（通过路由参数传递）
+        fileList: null
       },
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       rules: {
@@ -219,8 +220,14 @@ export default {
         }
       });
     },
-    handleAttachmentSuccess(response, file) {
+    handleAttachmentSuccess(response, file, fileList) {
+      console.log(response, file, fileList)
       this.form.attachmentId = response.data.id; // 假设后端返回附件ID
+      let attachment = {
+        fileName: file.name,
+        filePath: response.data
+      }
+      this.form.file = attachment;
     },
     handleBeforeUpload(file) {
       const isPDF = file.type === 'application/pdf';
@@ -233,6 +240,7 @@ export default {
     submitForm() {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
+          console.log(this.form)
           this.$request.post('/incomingDoc/add', this.form).then(res => {
             if (res.code === '200') {
               this.$message.success('收文登记成功');

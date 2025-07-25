@@ -2,6 +2,7 @@ package com.example.service;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.example.common.Constants;
+import com.example.entity.Attachment;
 import com.example.entity.FlowObject;
 import com.example.entity.IncomingDoc;
 import com.example.entity.IncomingOpinion;
@@ -10,6 +11,8 @@ import com.example.mapper.IncomingDocMapper;
 import com.example.utils.TokenUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,12 +26,16 @@ import java.util.List;
 @Service
 public class IncomingDocService {
 
+    private static final Logger log = LoggerFactory.getLogger(IncomingDocService.class);
     @Resource
     private IncomingDocMapper incomingDocMapper;
     @Resource
     private FlowObjectService flowObjectService; // 流转对象服务
     @Resource
     private IncomingOpinionService incomingOpinionService;
+    @Resource
+    private AttachmentService attachmentService; // 附件服务
+
 
     /**
      * 新增收文
@@ -51,6 +58,22 @@ public class IncomingDocService {
             }
         }
 
+        Attachment file = doc.getFile();
+        System.out.println("doc: " + doc);
+        System.out.println("file: " + file);
+        Attachment attachment = new Attachment();
+        attachment.setFileName(file.getFileName());
+        attachment.setFileType("收文附件");
+        attachment.setFilePath(file.getFilePath());
+        attachment.setCreateDate(new Date());
+        attachment.setCreator(TokenUtils.getCurrentUser().getId());
+
+        // 保存附件信息
+        if (attachment.getFilePath() != null) {
+            attachmentService.save(attachment);
+        }
+
+        Integer attachmentId = attachment.getId();
         // 自动填充系统字段
         doc.setCreator(TokenUtils.getCurrentUser().getId());
         doc.setCreateDate(new Date());
@@ -58,6 +81,7 @@ public class IncomingDocService {
         doc.setFeedbackRequired(doc.getFeedbackRequired() != null ? doc.getFeedbackRequired() : false);
         doc.setSecretType(doc.getSecretType() != null ? doc.getSecretType() : 0);  // 默认普通件
         doc.setStatus(doc.getStatus() != null ? doc.getStatus() : Constants.STATUS_PENDING);  // 默认待审核
+        doc.setAttachmentId(attachmentId);
 
         incomingDocMapper.insert(doc);
 

@@ -16,6 +16,7 @@ public class Attachment implements Serializable {
     private Date createDate;           // 创建时间
     private Integer updater;           // 更新者ID
     private Date updateDate;           // 更新时间
+    private String fileName;           // 文件名（如incoming_1.pdf）
 
     // 完整getter和setter
     public Integer getId() { return id; }
@@ -32,4 +33,6 @@ public class Attachment implements Serializable {
     public void setUpdater(Integer updater) { this.updater = updater; }
     public Date getUpdateDate() { return updateDate; }
     public void setUpdateDate(Date updateDate) { this.updateDate = updateDate; }
+    public String getFileName() { return fileName; }
+    public void setFileName(String fileName) { this.fileName = fileName; }
 }

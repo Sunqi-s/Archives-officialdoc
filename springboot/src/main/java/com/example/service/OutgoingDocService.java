@@ -23,6 +23,8 @@ public class OutgoingDocService {
     private FlowObjectService flowObjectService; // 流转对象服务
     @Resource
     private OutgoingOpinionService outgoingOpinionService;
+    @Resource
+    private AttachmentService attachmentService; // 附件服务
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -40,12 +42,30 @@ public class OutgoingDocService {
             }
         }
 
+        Attachment file = doc.getFile();
+        System.out.println("doc: " + doc);
+        System.out.println("file: " + file);
+        Attachment attachment = new Attachment();
+        attachment.setFileName(file.getFileName());
+        attachment.setFileType("发文附件");
+        attachment.setFilePath(file.getFilePath());
+        attachment.setCreateDate(new Date());
+        attachment.setCreator(TokenUtils.getCurrentUser().getId());
+
+        // 保存附件信息
+        if (attachment.getFilePath() != null) {
+            attachmentService.save(attachment);
+        }
+
+        Integer attachmentId = attachment.getId();
+
         doc.setArchiveStatus("处理中");
         doc.setCreator(TokenUtils.getCurrentUser().getId());
         doc.setSecretType(doc.getSecretType() != null ? doc.getSecretType() : 0);  // 默认普通件
         doc.setProcessType(doc.getProcessType());
         doc.setStatus(doc.getStatus() != null ? doc.getStatus() : Constants.STATUS_PENDING);
         doc.setFeedbackRequired(doc.getFeedbackRequired() != null ? doc.getFeedbackRequired() : false);
+        doc.setAttachmentId(attachmentId);
         outgoingDocMapper.insert(doc);
 
         Integer id = doc.getId();

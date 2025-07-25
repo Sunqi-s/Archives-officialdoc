@@ -46,6 +46,7 @@ public class IncomingDoc implements Serializable {
 
     List<IncomingOpinion> opinions;  // 审批意见（前端传递，非数据库字段）
     private String opinion; // 拟办意见（前端传递，非数据库字段）
+    private Attachment file;  // 附件列表（前端传递，非数据库字段）
 
     public Integer getId() {
         return id;
@@ -290,4 +291,8 @@ public class IncomingDoc implements Serializable {
     public Date getLimitDate() { return limitDate; }
 
     public void setLimitDate(Date limitDate) { this.limitDate = limitDate; }
+
+    public Attachment getFile() { return file; }
+
+    public void setFile(Attachment file) { this.file = file; }
 }
