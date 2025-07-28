@@ -14,8 +14,14 @@
       </el-form-item>
       <el-form-item>
         <el-select v-model="query.limitType" placeholder="请选择提醒类型">
-          <el-option label="收文提醒" value="收文提醒"></el-option>
-          <el-option label="发文提醒" value="发文提醒"></el-option>
+          <el-option label="收文提醒" value="INCOMING_DOC"></el-option>
+          <el-option label="发文提醒" value="OUTGOING_DOC"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-select v-model="query.docType" placeholder="请选择文档类型">
+          <el-option label="普通" value="NORMAL"></el-option>
+          <el-option label="密件" value="SECRET"></el-option>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -48,7 +54,16 @@
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column prop="limitType" label="提醒类型"></el-table-column>
+      <el-table-column prop="limitType" label="提醒类型">
+        <template #default="{row}">
+          {{ row.limitType === 'INCOMING_DOC' ? '收文提醒' : '发文提醒' }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="docType" label="文档类型">
+        <template #default="{row}">
+          {{ row.docType === 'NORMAL' ? '普通' : '密件' }}
+        </template>
+      </el-table-column>
       <el-table-column prop="createdTime" label="创建时间"></el-table-column>
       <el-table-column label="操作" width="180px" align="center">
         <template #default="{row}">
@@ -100,6 +115,7 @@ export default {
         name: '',
         status: null,
         limitType: null,
+        docType: null,
       },
       // 弹窗控制
       dialogVisible: false,
@@ -162,6 +178,7 @@ export default {
         name: '',
         status: null,
         limitType: null,
+        docType: null,
       },
       this.loadData(1);
     },

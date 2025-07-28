@@ -15,6 +15,7 @@ public class ReminderSettings implements Serializable {
     private String name;
     private RemindUnit remindBeforeUnit;
     private String limitType;
+    private String docType;
 
     // 枚举类型定义时间单位
     public enum RemindUnit {
@@ -52,4 +53,6 @@ public class ReminderSettings implements Serializable {
     public void setRemindBeforeUnit(RemindUnit remindBeforeUnit) { this.remindBeforeUnit = remindBeforeUnit; }
     public String getLimitType() { return limitType; }
     public void setLimitType(String limitType) { this.limitType = limitType; }
+    public String getDocType() { return docType; }
+    public void setDocType(String docType) { this.docType = docType; }
 }

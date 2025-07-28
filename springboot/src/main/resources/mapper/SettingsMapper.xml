@@ -12,7 +12,8 @@
         status,
         created_time,
         name,
-        limit_type
+        limit_type,
+        doc_type
     </sql>
 
     <insert id="insert" parameterType="com.example.entity.ReminderSettings" useGeneratedKeys="true" keyProperty="id">
@@ -27,6 +28,7 @@
             <if test="createdTime!= null"> created_time, </if>
             <if test="name!= null"> name, </if>
             <if test="limitType != null"> limit_type, </if>
+            <if test="docType != null"> doc_type, </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null"> #{id}, </if>
@@ -38,6 +40,7 @@
             <if test="createdTime != null"> #{createdTime}, </if>
             <if test="name != null"> #{name}, </if>
             <if test="limitType != null"> #{limitType}, </if>
+            <if test="docType != null"> #{docType}, </if>
         </trim>
     </insert>
     <update id="updateById">
@@ -51,6 +54,7 @@
             <if test="createdTime != null"> created_time = #{createdTime}, </if>
             <if test="name != null"> name = #{name}, </if>
             <if test="limitType != null"> limit_type = #{limitType}, </if>
+            <if test="docType != null"> doc_type = #{docType}, </if>
         </set>
         WHERE id = #{id}
     </update>
@@ -68,6 +72,7 @@
             <if test="query.name != null" > AND name LIKE CONCAT('%',#{query.name},'%') </if>
             <if test="query.status != null" > AND status = #{query.status} </if>
             <if test="query.limitType != null" > AND limit_type = #{query.limitType} </if>
+            <if test="query.docType != null" > AND doc_type = #{query.docType} </if>
         </where>
         ORDER BY created_time DESC
     </select>
@@ -91,6 +96,7 @@
             <if test="name != null"> AND name = #{name} </if>
             <if test="status != null"> AND status = #{status} </if>
             <if test="limitType != null"> AND limit_type = #{limitType} </if>
+            <if test="docType != null"> AND doc_type = #{docType} </if>
         </where>
         ORDER BY created_time DESC
     </select>

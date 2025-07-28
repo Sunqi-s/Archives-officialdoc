@@ -37,8 +37,14 @@
         </el-form-item>
         <el-form-item label="提醒类型">
           <el-select v-model="form.limitType">
-            <el-option label="收文提醒" value="收文提醒"></el-option>
-            <el-option label="发文提醒" value="发文提醒"></el-option>
+            <el-option label="收文提醒" value="INCOMING_DOC"></el-option>
+            <el-option label="发文提醒" value="OUTGOING_DOC"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="文档类型">
+          <el-select v-model="form.docType">
+            <el-option label="普通" value="NORMAL"></el-option>
+            <el-option label="密件" value="SECRET"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -63,6 +69,7 @@ export default {
         remindBeforeUnit: 'minutes',
         status: null,
         limitType: null,
+        docType: ''
       },
       minValues: {
         minutes: 5,
@@ -137,6 +144,7 @@ export default {
         remindBeforeUnit: 'minutes',
         status: null,
         limitType: null,
+        docType: ''
       };
     },
 
