@@ -42,6 +42,7 @@
           </el-tag>
         </template>
       </el-table-column>
+      <el-table-column prop="limitType" label="提醒类型"></el-table-column>
       <el-table-column prop="createdTime" label="创建时间"></el-table-column>
       <el-table-column label="操作" width="180px" align="center">
         <template #default="{row}">

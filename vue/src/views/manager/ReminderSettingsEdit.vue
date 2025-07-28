@@ -35,6 +35,12 @@
             <el-option label="禁用" :value="1"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="提醒类型">
+          <el-select v-model="form.limitType">
+            <el-option label="收文提醒" value="收文提醒"></el-option>
+            <el-option label="发文提醒" value="发文提醒"></el-option>
+          </el-select>
+        </el-form-item>
       </el-form>
 
       <div class="form-footer">
@@ -56,6 +62,7 @@ export default {
         remindBeforeValue: 30,
         remindBeforeUnit: 'minutes',
         status: null,
+        limitType: null,
       },
       minValues: {
         minutes: 5,
@@ -129,6 +136,7 @@ export default {
         remindBeforeValue: 30,
         remindBeforeUnit: 'minutes',
         status: null,
+        limitType: null,
       };
     },
 
