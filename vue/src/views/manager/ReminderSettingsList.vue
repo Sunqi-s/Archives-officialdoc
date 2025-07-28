@@ -13,6 +13,12 @@
         </el-select>
       </el-form-item>
       <el-form-item>
+        <el-select v-model="query.limitType" placeholder="请选择提醒类型">
+          <el-option label="收文提醒" value="收文提醒"></el-option>
+          <el-option label="发文提醒" value="发文提醒"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
         <el-button type="primary" @click="loadData(1)">查询</el-button>
         <el-button type="warning" plain style="margin-left: 10px" @click="resetQuery">重置</el-button>
       </el-form-item>
@@ -93,6 +99,7 @@ export default {
       query: {
         name: '',
         status: null,
+        limitType: null,
       },
       // 弹窗控制
       dialogVisible: false,
@@ -154,6 +161,7 @@ export default {
       this.query = {
         name: '',
         status: null,
+        limitType: null,
       },
       this.loadData(1);
     },
