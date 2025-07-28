@@ -74,6 +74,7 @@
             <el-menu-item index="/admin">用户管理</el-menu-item>
             <el-menu-item index="/flow-object-list">流转对象管理</el-menu-item>
             <el-menu-item index="/doc-type-list">来文类型管理</el-menu-item>
+            <el-menu-item index="/reminder-settings-list">提醒设置</el-menu-item>
           </el-submenu>
         </el-menu>
       </div>

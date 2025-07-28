@@ -35,8 +35,10 @@ const routes = [
       { path: 'outgoing-doc-detail/:id', name: 'OutgoingDocDetail', meta: { name: '发文详情' }, component: () => import('../views/manager/OutgoingDocDetail.vue') },
       { path: 'outgoing-doc-edit/:id/:secretType', name: 'OutgoingDocEdit', meta: { name: '发文编辑' }, component: () => import('../views/manager/OutgoingDocEdit.vue') },
       { path: 'outgoing-doc-normal/:secretType', name: 'OutgoingDocList', meta: { name: '普通发文列表' }, component: () => import('../views/manager/OutgoingDocList.vue') },
-      { path: 'outgoing-doc-secret/:secretType', name: 'OutgoingDocList', meta: { name: '密件发文列表' }, component: () => import('../views/manager/OutgoingDocList.vue') }
-
+      { path: 'outgoing-doc-secret/:secretType', name: 'OutgoingDocList', meta: { name: '密件发文列表' }, component: () => import('../views/manager/OutgoingDocList.vue') },
+      { path: 'reminder-settings-list', name: 'ReminderSettings', meta: { name: '提醒设置' }, component: () => import('../views/manager/ReminderSettingsList.vue') },
+      { path: 'reminder-settings-register', name: 'ReminderSettingsRegister', meta: { name: '添加提醒设置' }, component: () => import('../views/manager/ReminderSettingsRegister.vue') },
+      { path: 'reminder-settings-edit/:id', name: 'ReminderSettingsEdit', meta: { name: '编辑提醒设置' }, component: () => import('../views/manager/ReminderSettingsEdit.vue') }
     ]
   },
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },

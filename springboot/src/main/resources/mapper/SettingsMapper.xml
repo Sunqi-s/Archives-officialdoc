@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.SettingsMapper">
+
+    <sql id="Base_Column_List">
+        id
+        ,
+        user_id,
+        remind_before_value,
+        remind_before_unit,
+        updated_time,
+        status,
+        created_time,
+        name
+    </sql>
+
+    <insert id="insert" parameterType="com.example.entity.ReminderSettings" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO reminder_settings
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id!= null"> id, </if>
+            <if test="userId!= null"> user_id, </if>
+            <if test="remindBeforeValue!= null"> remind_before_value, </if>
+            <if test="remindBeforeUnit != null"> remind_before_unit, </if>
+            <if test="updatedTime!= null"> updated_time, </if>
+            <if test="status!= null"> status, </if>
+            <if test="createdTime!= null"> created_time, </if>
+            <if test="name!= null"> name, </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id}, </if>
+            <if test="userId != null"> #{userId}, </if>
+            <if test="remindBeforeValue != null"> #{remindBeforeValue}, </if>
+            <if test="remindBeforeUnit != null"> #{remindBeforeUnit}, </if>
+            <if test="updatedTime != null"> #{updatedTime}, </if>
+            <if test="status != null"> #{status}, </if>
+            <if test="createdTime != null"> #{createdTime}, </if>
+            <if test="name != null"> #{name}, </if>
+        </trim>
+    </insert>
+    <update id="updateById">
+        UPDATE reminder_settings
+        <set>
+            <if test="userId != null"> user_id = #{userId}, </if>
+            <if test="remindBeforeValue != null"> remind_before_value = #{remindBeforeValue}, </if>
+            <if test="remindBeforeUnit != null"> remind_before_unit = #{remindBeforeUnit}, </if>
+            <if test="updatedTime != null"> updated_time = #{updatedTime}, </if>
+            <if test="status != null"> status = #{status}, </if>
+            <if test="createdTime != null"> created_time = #{createdTime}, </if>
+            <if test="name != null"> name = #{name}, </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM reminder_settings WHERE id = #{id}
+    </delete>
+
+
+    <select id="selectPageList" resultType="com.example.entity.ReminderSettings">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM reminder_settings
+        <where>
+            <if test="query.name != null" > AND name LIKE CONCAT('%',#{query.name},'%') </if>
+            <if test="query.status != null" > AND status = #{query.status} </if>
+        </where>
+        ORDER BY created_time DESC
+    </select>
+    <select id="selectById" resultType="com.example.entity.ReminderSettings">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM reminder_settings
+        WHERE id = #{id}
+    </select>
+    <select id="selectAll" resultType="com.example.entity.ReminderSettings">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM reminder_settings
+        <where>
+            <if test="id != null"> id = #{id} </if>
+            <if test="userId != null"> user_id = #{userId} </if>
+            <if test="remindBeforeValue != null"> AND remind_before_value = #{remindBeforeValue} </if>
+            <if test="remindBeforeUnit != null"> AND remind_before_unit = #{remindBeforeUnit} </if>
+            <if test="updatedTime != null"> AND updated_time = #{updatedTime} </if>
+            <if test="createdTime != null"> AND created_time = #{createdTime} </if>
+            <if test="name != null"> AND name = #{name} </if>
+            <if test="status != null"> AND status = #{status} </if>
+        </where>
+        ORDER BY created_time DESC
+    </select>
+</mapper>
