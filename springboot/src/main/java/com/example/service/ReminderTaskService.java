@@ -35,6 +35,10 @@ public class ReminderTaskService {
     public void checkReminders() {
         logger.info("Starting reminder check task...");
         System.out.println("Reminder check task started");
+
+        List<String> Inmessages = new ArrayList<>();
+        List<String> Outmessages = new ArrayList<>();
+
         // 从 doc_incoming_doc 和 doc_outgoing_doc 中查询 limit_date 不为空的数据
         List<IncomingDoc> incomingDocs = incomingDocService.getDocsWithLimitDate();
         List<OutgoingDoc> outgoingDocs = outgoingDocService.getDocsWithLimitDate();
@@ -55,12 +59,31 @@ public class ReminderTaskService {
                 if (isMatch(setting, doc)) {
                     Date remindDate = calculateRemindDate(setting, getLimitDate(doc));
                     if (isTimeToRemind(remindDate)) {
-                        String message = generateReminderMessage(setting, doc);
-                        reminderWebSocketHandler.sendReminderMessage(message);
+                        if (doc instanceof IncomingDoc) {
+                            IncomingDoc incomingDoc = (IncomingDoc) doc;
+                            Inmessages.add(incomingDoc.getTitle());
+                        } else if (doc instanceof OutgoingDoc) {
+                            OutgoingDoc outgoingDoc = (OutgoingDoc) doc;
+                            Outmessages.add( outgoingDoc.getTitle());
+                        }
                     }
                 }
             }
         }
+        String inmessage = "收文提醒：";
+        for (String inme : Inmessages) {
+            inmessage = inmessage + inme + " ";
+        }
+        inmessage = inmessage + "的限办日期快到了，请及时办理。";
+        String outmessage = "发文提醒：";
+        for (String outme : Outmessages) {
+            outmessage = outmessage + outme + " ";
+        }
+        outmessage = outmessage + "的限办日期快到了，请及时办理。";
+
+        String messages = inmessage +"\n " + outmessage;
+
+        reminderWebSocketHandler.sendReminderMessage(messages);
 
         logger.info("Reminder check task completed.");
     }
@@ -107,10 +130,11 @@ public class ReminderTaskService {
     private String generateReminderMessage(ReminderSettings setting, Object doc) {
         if (doc instanceof IncomingDoc) {
             IncomingDoc incomingDoc = (IncomingDoc) doc;
-            return "收文提醒：" + incomingDoc.getTitle() + " 的限办日期快到了！";
+
+            return incomingDoc.getTitle();
         } else if (doc instanceof OutgoingDoc) {
             OutgoingDoc outgoingDoc = (OutgoingDoc) doc;
-            return "发文提醒：" + outgoingDoc.getTitle() + " 的限办日期快到了！";
+            return outgoingDoc.getTitle();
         }
         return "";
     }

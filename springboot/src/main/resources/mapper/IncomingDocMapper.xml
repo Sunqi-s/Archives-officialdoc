@@ -125,6 +125,6 @@
     <select id="selectAllWithLimitDate" resultType="com.example.entity.IncomingDoc">
         SELECT <include refid="Base_Column_List" />
         FROM doc_incoming_doc
-        WHERE limit_date is not null
+        WHERE limit_date is not null AND status = 1
     </select>
 </mapper>

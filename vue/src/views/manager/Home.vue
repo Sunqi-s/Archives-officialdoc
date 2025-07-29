@@ -89,9 +89,8 @@
         :close-on-click-modal="false"
         :close-on-press-escape="false"
     >
-      <template #content>
-        <p>{{ reminderMessage }}</p>
-      </template>
+      <p>{{ reminderMessage }}</p>
+
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="reminderDialogVisible = false">关闭</el-button>
@@ -105,12 +104,6 @@
 import { connectWebSocket } from "@/utils/websocket"
 export default {
   name: "Home",
-  mounted() {
-    // 初始化 WebSocket 连接，并传入处理消息的回调函数
-    connectWebSocket((message) => {
-      this.showReminder(message);
-    });
-  },
   data() {
     return {
       statistics: [
@@ -210,6 +203,12 @@ export default {
       reminderMessage: '',
     };
   },
+  mounted() {
+    // 初始化 WebSocket 连接，并传入处理消息的回调函数
+    connectWebSocket((message) => {
+      this.showReminder(message);
+    });
+  },
   created() {
     this.loadStatistics();
     this.loadPendingDocs();
@@ -288,9 +287,15 @@ export default {
       this.loadPendingDocs(1);  // 重置后重新加载第一页
     },
     showReminder(message) {
+      console.log("收到消息：" + message)
       // 使用 Element UI 的消息框来显示提醒信息
-      this.reminderMessage = message;
-      this.reminderDialogVisible = true;
+      if (message === ''){
+        this.reminderDialogVisible = false;
+        console.log('没有新的提醒')
+      }else {
+        this.reminderMessage = message;
+        this.reminderDialogVisible = true;
+      }
     }
   }
 };
