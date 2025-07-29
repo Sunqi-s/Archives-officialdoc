@@ -140,8 +140,8 @@
             <if test="query.secretType != null">
                 AND secret_type = #{query.secretType}
             </if>
-            <if test="query.processType != null and query.processType != ''">
-                AND process_type = #{query.processType}
+            <if test="query.archiveStatus != null and query.archiveStatus != ''">
+                AND archive_status = #{query.archiveStatus}
             </if>
             <if test="query.secretLevel != null and query.secretLevel != ''">
                 AND secret_level = #{query.secretLevel}

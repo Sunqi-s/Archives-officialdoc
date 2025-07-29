@@ -29,6 +29,14 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="处理状态">
+        <el-select v-model="query.processType" placeholder="请选择处理状态" style="width: 180px">
+          <el-option label="未处理" value="未处理"></el-option>
+          <el-option label="处理中" value="处理中"></el-option>
+          <el-option label="存档" value="存档"></el-option>
+        </el-select>
+      </el-form-item>
+
       <el-form-item label="来文日期">
         <el-date-picker
             v-model="query.receiveDateRange"

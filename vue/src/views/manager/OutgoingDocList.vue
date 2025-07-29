@@ -19,6 +19,13 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item label="处理状态">
+        <el-select v-model="query.archiveStatus" placeholder="请选择处理状态" style="width: 180px">
+          <el-option label="处理中" value="处理中"></el-option>
+          <el-option label="归档" value="归档"></el-option>
+        </el-select>
+      </el-form-item>
+
 <!--      <el-form-item label="存档日期">-->
 <!--        <el-date-picker-->
 <!--            v-model="query.archiveDate"-->
@@ -95,7 +102,7 @@ export default {
       query: {
         title: '',          // 文件标题（模糊查询）
         senderOrg: '',      // 来文单位（模糊查询）
-        processType: '' ,    // 处理状态（精确查询）
+        archiveStatus: '' ,    // 处理状态（精确查询）
         secretType: null, // 密件类型（0-普通件，1-密件）
         archiveDate: null
       }
@@ -140,7 +147,7 @@ export default {
       this.query = {
         title: '',
         senderOrg: '',
-        processType: '',
+        archiveStatus: '',
         secretType: null, // 密件类型（0-普通件，1-密件）
         archiveDate: null,
       };
