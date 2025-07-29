@@ -208,7 +208,6 @@ export default {
       },
       reminderDialogVisible: false,
       reminderMessage: '',
-      socket: null
     };
   },
   created() {
@@ -290,11 +289,8 @@ export default {
     },
     showReminder(message) {
       // 使用 Element UI 的消息框来显示提醒信息
-      this.$message({
-        message: message,
-        type: 'warning',
-        duration: 5000
-      });
+      this.reminderMessage = message;
+      this.reminderDialogVisible = true;
     }
   }
 };
