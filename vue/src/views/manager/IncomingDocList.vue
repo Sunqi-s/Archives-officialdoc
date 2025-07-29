@@ -72,7 +72,7 @@
           <el-button type="warning" size="mini" @click="handlePrint(scope.row.id)">打印处理单</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="180">
+      <el-table-column label="操作" width="240">
         <template v-slot="scope">
           <el-button size="mini" @click="handleDetail(scope.row.id)">详情</el-button>
           <el-button size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>

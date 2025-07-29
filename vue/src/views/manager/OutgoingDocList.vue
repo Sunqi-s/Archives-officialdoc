@@ -54,12 +54,13 @@
       <el-table-column prop="archiveDate" label="存档日期" width="120"></el-table-column>
       <el-table-column prop="handlingOrg" label="办件单位" width="180"></el-table-column>
       <el-table-column prop="archiveStatus" label="处理状态" width="80"></el-table-column>
+      <el-table-column prop="objectName" label="当前审批人名称" width="120"></el-table-column>
       <el-table-column label="打印" width="140">
         <template v-slot="scope">
           <el-button type="warning" size="mini" @click="handlePrint(scope.row.id)">打印处理单</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="180">
+      <el-table-column label="操作" width="240">
         <template v-slot="scope">
           <el-button size="mini" @click="handleDetail(scope.row.id)">详情</el-button>
           <el-button size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>

@@ -105,8 +105,31 @@
 
     <select id="selectPageList" resultType="com.example.entity.OutgoingDoc">
         SELECT
-        <include refid="Base_Column_List"/>
-        FROM doc_outgoing_doc
+        dod.id,
+        dod.sender_org,
+        dod.title,
+        dod.secret_level,
+        dod.archive_status,
+        dod.archive_date,
+        dod.file_no,
+        dod.record_no,
+        dod.creator,
+        dod.create_date,
+        dod.updater,
+        dod.update_date,
+        dod.limit_date,
+        dod.page_count,
+        dod.process_type,
+        dod.handling_org,
+        dod.attachment_id,
+        dod.secret_type,
+        dod.sender_doc_no,
+        dod.status,
+        dod.feedback_required,
+        doc_object.name AS objectName
+        FROM doc_outgoing_doc dod
+        LEFT JOIN doc_outgoing_opinion doc_opinion ON dod.id = doc_opinion.doc_id AND doc_opinion.create_date = (SELECT MAX(create_date) FROM doc_outgoing_opinion WHERE doc_id = dod.id)
+        LEFT JOIN doc_flow_object doc_object ON doc_opinion.next_object_id = doc_object.id
         <where>
             <if test="query.title != null and query.title != ''">
                 AND title LIKE CONCAT('%', #{query.title}, '%')

@@ -36,6 +36,8 @@ public class OutgoingDoc implements Serializable {
     private String opinion; // 拟办意见（前端传递，非数据库字段）
     private Attachment file; // 附件列表（前端传递，非数据库字段）
 
+    private String objectName; // 审批对象名称（前端传递，非数据库字段）
+
     // 完整getter和setter
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -93,4 +95,6 @@ public class OutgoingDoc implements Serializable {
     public void setFeedbackRequired(Boolean feedbackRequired) { this.feedbackRequired = feedbackRequired; }
     public Attachment getFile() { return file; }
     public void setFile(Attachment file) { this.file = file; }
+    public String getObjectName() { return objectName; }
+    public void setObjectName(String objectName) { this.objectName = objectName; }
 }
