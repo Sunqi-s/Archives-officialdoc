@@ -121,7 +121,7 @@ export default {
         }
 
         // 验证提前时间单位是否合法
-        if (!['minutes', 'hours', 'days', 'weeks','months'].includes(this.form.remindBeforeUnit)) {
+        if (!['minutes', 'hours', 'days', 'months'].includes(this.form.remindBeforeUnit)) {
           this.$message.warning('提前时间单位不合法');
           return;
         }
