@@ -231,4 +231,8 @@ public class IncomingDocService {
         }
         return list;
     }
+
+    public List<IncomingDoc> getDocsWithLimitDate(){
+        return incomingDocMapper.selectAllWithLimitDate();
+    }
 }

@@ -203,4 +203,9 @@ public class OutgoingDocService {
         }
         return list;
     }
+
+    public List<OutgoingDoc> getDocsWithLimitDate() {
+        List<OutgoingDoc> list = outgoingDocMapper.selectAllWithLimitDate();
+        return list;
+    }
 }

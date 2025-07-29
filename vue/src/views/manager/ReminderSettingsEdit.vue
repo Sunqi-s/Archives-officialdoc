@@ -43,8 +43,8 @@
         </el-form-item>
         <el-form-item label="文档类型">
           <el-select v-model="form.docType">
-            <el-option label="普通" value="NORMAL"></el-option>
-            <el-option label="密件" value="SECRET"></el-option>
+            <el-option label="普通件" value="0"></el-option>
+            <el-option label="密件" value="1"></el-option>
           </el-select>
         </el-form-item>
       </el-form>

@@ -61,7 +61,7 @@
       </el-table-column>
       <el-table-column prop="docType" label="文档类型">
         <template #default="{row}">
-          {{ row.docType === 'NORMAL' ? '普通' : '密件' }}
+          {{ row.docType === 0 ? '普通' : '密件' }}
         </template>
       </el-table-column>
       <el-table-column prop="createdTime" label="创建时间"></el-table-column>

@@ -45,4 +45,6 @@ public interface IncomingDocMapper {
      * 动态条件分页查询收文列表（XML实现条件）
      */
     List<IncomingDoc> selectPageList(@Param("query") IncomingDoc query);
+
+    List<IncomingDoc> selectAllWithLimitDate();
 }
