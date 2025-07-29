@@ -35,6 +35,8 @@ public class IncomingDocService {
     private IncomingOpinionService incomingOpinionService;
     @Resource
     private AttachmentService attachmentService; // 附件服务
+    @Resource
+    private RecordNoService recordNoService;
 
 
     /**
@@ -210,6 +212,7 @@ public class IncomingDocService {
     @Transactional(rollbackFor = Exception.class)
     public void archive(Integer id) {
         IncomingDoc doc = incomingDocMapper.selectById(id);
+        String archiveNo = recordNoService.getRecordNo("sw");
 
         if (Constants.PROCESS_TYPE_ARCHIVED.equals(doc.getProcessType())) {
             throw new CustomException("5016", "文档已存档，无需重复操作");

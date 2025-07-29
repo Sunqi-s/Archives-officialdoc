@@ -46,6 +46,4 @@ public interface OutgoingDocMapper {
     List<OutgoingDoc> selectPageList(@Param("query") OutgoingDoc query);
 
     List<OutgoingDoc> selectAllWithLimitDate();
-
-
 }

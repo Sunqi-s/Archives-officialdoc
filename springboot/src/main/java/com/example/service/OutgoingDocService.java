@@ -25,6 +25,8 @@ public class OutgoingDocService {
     private OutgoingOpinionService outgoingOpinionService;
     @Resource
     private AttachmentService attachmentService; // 附件服务
+    @Resource
+    private RecordNoService recordNoService;
 
 
     @Transactional(rollbackFor = Exception.class)
@@ -181,14 +183,15 @@ public class OutgoingDocService {
     @Transactional(rollbackFor = Exception.class)
     public void archive(Integer id) {
         OutgoingDoc doc = outgoingDocMapper.selectById(id);
+        String recordNo = recordNoService.getRecordNo("fw");
 
-        if (Constants.PROCESS_TYPE_ARCHIVED.equals(doc.getStatus())) {
+        if (Constants.STATUS_ARCHIVED.equals(doc.getStatus())) {
             throw new CustomException("5016", "文档已存档，无需重复操作");
         }
         doc.setStatus(2);
         doc.setArchiveStatus("归档");
         doc.setArchiveDate(new Date());
-        doc.setRecordNo(new Date().getYear() + "-" + doc.getFileNo());
+        doc.setRecordNo(recordNo);
         doc.setUpdater(TokenUtils.getCurrentUser().getId());
         outgoingDocMapper.updateById(doc);
     }
