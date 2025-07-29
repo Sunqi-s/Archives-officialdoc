@@ -91,7 +91,7 @@
         <!-- 保存基础信息按钮 -->
         <div style="text-align: center; margin: 20px 0;">
           <el-button type="primary" @click="saveDoc">保存基础信息</el-button>
-          <el-button type="warning" @click="handlePrint">打印处理单</el-button>
+<!--          <el-button type="warning" @click="handlePrint">打印处理单</el-button>-->
         </div>
 
         <!-- 流转意见 -->
