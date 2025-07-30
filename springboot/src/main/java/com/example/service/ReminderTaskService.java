@@ -30,8 +30,8 @@ public class ReminderTaskService {
     @Autowired
     private ReminderWebSocketHandler reminderWebSocketHandler;
 
-    // 每 5 分钟执行一次定时任务
-    @Scheduled(fixedRate = 1 * 60 * 1000)
+    // 每 30 分钟执行一次定时任务
+    @Scheduled(fixedRate = 30 * 60 * 1000)
     public void checkReminders() {
         logger.info("Starting reminder check task...");
         System.out.println("Reminder check task started");
