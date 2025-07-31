@@ -1,17 +1,17 @@
 /*
- Navicat MySQL Data Transfer
+ Navicat Premium Data Transfer
 
- Source Server         : 本地数据库
+ Source Server         : work
  Source Server Type    : MySQL
- Source Server Version : 80033
+ Source Server Version : 80035
  Source Host           : localhost:3306
  Source Schema         : archives_officialdoc
 
  Target Server Type    : MySQL
- Target Server Version : 80033
+ Target Server Version : 80035
  File Encoding         : 65001
 
- Date: 24/07/2025 13:08:11
+ Date: 31/07/2025 10:07:25
 */
 
 SET NAMES utf8mb4;
@@ -22,7 +22,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin`  (
-  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `username` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT NULL COMMENT '用户名',
   `password` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT NULL COMMENT '密码',
   `name` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT NULL COMMENT '姓名',
@@ -30,10 +30,10 @@ CREATE TABLE `admin`  (
   `role` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT NULL COMMENT '角色标识',
   `phone` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT NULL COMMENT '电话',
   `email` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT NULL COMMENT '邮箱',
-  `class_id` int(0) NULL DEFAULT NULL COMMENT '关联class_info表ID',
-  `recommend` int(0) NOT NULL DEFAULT 0,
+  `class_id` int NULL DEFAULT NULL COMMENT '关联class_info表ID',
+  `recommend` int NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_unicode_ci COMMENT = '管理员' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_unicode_ci COMMENT = '管理员' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin
@@ -42,40 +42,61 @@ INSERT INTO `admin` VALUES (1, 'admin', 'admin', '系统管理员', 'http://loca
 INSERT INTO `admin` VALUES (16, 'cxd01', '123456', '办公室管理员', 'http://localhost:9090/files/1748272861832-logo.png', 'DOCADMIN', NULL, NULL, NULL, 0);
 
 -- ----------------------------
+-- Table structure for doc_archive_no
+-- ----------------------------
+DROP TABLE IF EXISTS `doc_archive_no`;
+CREATE TABLE `doc_archive_no`  (
+  `id` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `nvalue` int NULL DEFAULT NULL,
+  `summary` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of doc_archive_no
+-- ----------------------------
+INSERT INTO `doc_archive_no` VALUES ('fw', 1, '发文');
+INSERT INTO `doc_archive_no` VALUES ('sw', 0, '收文');
+
+-- ----------------------------
 -- Table structure for doc_attachment
 -- ----------------------------
 DROP TABLE IF EXISTS `doc_attachment`;
 CREATE TABLE `doc_attachment`  (
-  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `file_path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '附件存储路径（如/Uploads/Doc/202505/incoming_1.pdf）',
   `file_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '类型（收文/发文）',
-  `creator` int(0) NULL DEFAULT NULL COMMENT '创建者',
-  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `updater` int(0) NULL DEFAULT NULL COMMENT '更新者',
-  `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `creator` int NULL DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updater` int NULL DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `file_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件名称',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_file_type`(`file_type`) USING BTREE COMMENT '附件类型索引'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '附件存储表' ROW_FORMAT = Dynamic;
+  INDEX `idx_file_type`(`file_type` ASC) USING BTREE COMMENT '附件类型索引'
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '附件存储表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of doc_attachment
 -- ----------------------------
+INSERT INTO `doc_attachment` VALUES (1, 'http://localhost:9090/files/1753430097054-1-18145-25去骨税单_1742804778619.pdf', '收文附件', 1, '2025-07-25 15:55:13', NULL, NULL, '1-18145-25去骨税单_1742804778619.pdf');
+INSERT INTO `doc_attachment` VALUES (2, 'http://localhost:9090/files/1753434611598-1-18145-25去骨报关单_1742804778621.pdf', '收文附件', 1, '2025-07-25 17:26:15', NULL, NULL, '1-18145-25去骨报关单_1742804778621.pdf');
+INSERT INTO `doc_attachment` VALUES (3, 'http://localhost:9090/files/1753435821179-1-18145-25山羊税单_1742804778613.pdf', '收文附件', 1, '2025-07-25 17:30:46', NULL, NULL, '1-18145-25山羊税单_1742804778613.pdf');
 
 -- ----------------------------
 -- Table structure for doc_flow_object
 -- ----------------------------
 DROP TABLE IF EXISTS `doc_flow_object`;
 CREATE TABLE `doc_flow_object`  (
-  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '领导姓名',
   `position` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '职务（如主任、副主任）',
-  `level` int(0) NOT NULL COMMENT '级别（1-主任，2-副主任等）',
-  `creator` int(0) NULL DEFAULT NULL COMMENT '创建者',
-  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `updater` int(0) NULL DEFAULT NULL COMMENT '更新者',
-  `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `level` int NOT NULL COMMENT '级别（1-主任，2-副主任等）',
+  `creator` int NULL DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updater` int NULL DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '流转对象表（领导/审批人信息）' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '流转对象表（领导/审批人信息）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of doc_flow_object
@@ -93,7 +114,7 @@ INSERT INTO `doc_flow_object` VALUES (16, '办公室', '办公室', 0, 1, '2025-
 -- ----------------------------
 DROP TABLE IF EXISTS `doc_incoming_doc`;
 CREATE TABLE `doc_incoming_doc`  (
-  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `doc_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '来文类型（下拉菜单：函/通知/请示等）',
   `receive_date` date NULL DEFAULT NULL COMMENT '来文日期（带日历控件:默认当天）',
   `contact_person` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '联系人（输入框）',
@@ -101,68 +122,81 @@ CREATE TABLE `doc_incoming_doc`  (
   `contact_phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '联系电话（输入框）',
   `secret_level` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '普通' COMMENT '密级（下拉菜单：普通/秘密/机密/绝密）',
   `urgency_level` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '普通' COMMENT '紧急程度（下拉菜单：普通/紧急/特急）',
-  `page_count` int(0) NULL DEFAULT NULL COMMENT '文件页数（输入框）',
+  `page_count` int NULL DEFAULT NULL COMMENT '文件页数（输入框）',
   `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件标题（输入框）',
   `document_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文种/期号（输入框，如“函〔2025〕1号”）',
   `box_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '盒号（输入框）',
-  `file_no` int(0) NULL DEFAULT NULL COMMENT '件号（输入框，4位纯数字，按年重置）',
+  `file_no` int NULL DEFAULT NULL COMMENT '件号（输入框，4位纯数字，按年重置）',
   `sender_doc_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '来文编号（输入框，如来文单位自编编号）',
   `feedback_required` tinyint(1) NULL DEFAULT 0 COMMENT '限时反馈（勾选框：0-否，1-是）',
   `process_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '处理类型（下拉菜单：阅办/承办/存档等）',
   `archive_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '归档号',
-  `archive_date` datetime(0) NULL DEFAULT NULL,
+  `archive_date` datetime NULL DEFAULT NULL,
   `handling_org` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '办件单位',
-  `attachment_id` int(0) NULL DEFAULT NULL COMMENT '附件ID（关联attachment表）文件内容（扫描版）',
-  `creator` int(0) NULL DEFAULT NULL COMMENT '创建者',
-  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `updater` int(0) NULL DEFAULT NULL COMMENT '更新者',
-  `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `attachment_id` int NULL DEFAULT NULL COMMENT '附件ID（关联attachment表）文件内容（扫描版）',
+  `creator` int NULL DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updater` int NULL DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `secret_type` tinyint(1) NULL DEFAULT 0 COMMENT '密件类型（0-普通件，1-密件）',
   `status` tinyint(1) NULL DEFAULT 0 COMMENT '状态（0-待审核，1-流转中，2-已存档）',
-  `annual` int(0) NULL DEFAULT NULL COMMENT '年度（输入框，如2025）',
-  `copies` int(0) NULL DEFAULT NULL COMMENT '份数（输入框，填写文件份数）',
+  `annual` int NULL DEFAULT NULL COMMENT '年度（输入框，如2025）',
+  `copies` int NULL DEFAULT NULL COMMENT '份数（输入框，填写文件份数）',
+  `limit_date` datetime NULL DEFAULT NULL COMMENT '限办时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '收文信息表（含收文页面全量字段）' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 32 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '收文信息表（含收文页面全量字段）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of doc_incoming_doc
 -- ----------------------------
-INSERT INTO `doc_incoming_doc` VALUES (7, '函', '2025-05-26', '1111', '啊啊啊', '', '普通', '普通', NULL, '111111', '', '', 111, '', 0, '存档', '', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-26 16:59:21', 1, NULL, 0, 2, NULL, NULL);
-INSERT INTO `doc_incoming_doc` VALUES (8, '函', '2025-05-26', '前期去去去', '前期去去去', '1', '普通', '普通', 111, '111111', '', '111', 111, '111', 1, '存档', '1111', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-26 22:57:13', 1, NULL, 0, 2, NULL, NULL);
-INSERT INTO `doc_incoming_doc` VALUES (9, '办公室内部文', '2025-05-27', '', '来文单位', '', '普通', '普通', NULL, '文件标题文件标题文件标题文件标题文件标题文件标题文件标题', '', '', NULL, '', 0, '存档', '', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 04:17:05', 1, NULL, 0, 2, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (10, '办公室内部文', '2025-05-27', '', '来文单位来文单位来文单位来文单位来文单位', '', '秘密', '普通', NULL, '文件标题文件标题文件标题文件标题', '', '', NULL, '', 0, '存档', '', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 04:46:37', 1, NULL, 0, 2, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (11, '办公室内部文', '2025-05-27', '', '来文单位来文单位来文单位来文单位来文单位', '', '普通', '普通', NULL, '文件标题文件标题文件标题文件标题文件标题文件标题文件标题', '', '', NULL, '', 0, '存档', '', '2025-05-27 06:23:29', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 05:01:42', 1, NULL, 1, 2, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (12, '办公室内部文', '2025-05-27', '', '来文单位来文单位来文单位', '', '普通', '普通', NULL, '来文单位来文单位来文单位来文单位', '', '', NULL, '', 0, '存档', '', '2025-05-27 06:23:29', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 05:02:29', 1, NULL, 1, 2, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (13, '办公室内部文', '2025-05-27', '', '密件', '', '普通', '普通', NULL, '文件标题文件标题文件标题文件标题文件标题文件标题', '', '', NULL, '', 0, '存档', '', '2025-05-27 06:23:29', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 05:04:06', 1, NULL, 1, 2, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (14, '办公室内部文', '2025-05-27', '', '来文单位', '', '普通', '普通', NULL, '文件标题', '', '', NULL, '', 0, '存档', '', '2025-05-27 06:23:18', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 05:07:10', 1, NULL, 1, 2, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (15, '办公室内部文', '2025-05-27', '', '111111', '', '普通', '普通', NULL, '11111111', '', '', NULL, '', 0, '存档', '', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 08:54:43', 1, NULL, 0, 2, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (16, '办公室内部文', '2025-05-27', '2222', '22222', '22222', '普通', '普通', NULL, '22222', '', '', NULL, '222', 1, '存档', '', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 08:59:18', 1, NULL, 0, 2, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (17, '办公室内部文', '2025-05-27', '', '来文单位', '', '普通', '特提', NULL, '文件标题', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 09:13:14', NULL, NULL, 0, 1, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (18, '办公室内部文', '2025-05-27', '', '111111', '1111', '普通', '普通', NULL, '文件标题\n', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 09:43:00', NULL, NULL, 0, 1, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (19, '各单位来文', '2025-05-27', '', '区城管局', '', '普通', '普通', NULL, '瓦五', '', '', NULL, '大长经开管办2号', 0, '存档', '', '2025-05-27 10:09:56', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 09:54:57', 1, NULL, 0, 2, 2025, 1);
-INSERT INTO `doc_incoming_doc` VALUES (20, '办公室内部文', '2025-05-27', '', '1111', '', '普通', '普通', NULL, '1111111', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 13:09:42', NULL, NULL, 0, 1, 2025, 1);
+INSERT INTO `doc_incoming_doc` VALUES (7, '函', '2025-05-26', '1111', '啊啊啊', '', '普通', '普通', NULL, '111111', '', '', 111, '', 0, '存档', '', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-26 16:59:21', 1, NULL, 0, 2, NULL, NULL, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (8, '函', '2025-05-26', '前期去去去', '前期去去去', '1', '普通', '普通', 111, '111111', '', '111', 111, '111', 1, '存档', '1111', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-26 22:57:13', 1, NULL, 0, 2, NULL, NULL, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (9, '办公室内部文', '2025-05-27', '', '来文单位', '', '普通', '普通', NULL, '文件标题文件标题文件标题文件标题文件标题文件标题文件标题', '', '', NULL, '', 0, '存档', '', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 04:17:05', 1, NULL, 0, 2, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (10, '办公室内部文', '2025-05-27', '', '来文单位来文单位来文单位来文单位来文单位', '', '秘密', '普通', NULL, '文件标题文件标题文件标题文件标题', '', '', NULL, '', 0, '存档', '', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 04:46:37', 1, NULL, 0, 2, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (11, '办公室内部文', '2025-05-27', '', '来文单位来文单位来文单位来文单位来文单位', '', '普通', '普通', NULL, '文件标题文件标题文件标题文件标题文件标题文件标题文件标题', '', '', NULL, '', 0, '存档', '', '2025-05-27 06:23:29', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 05:01:42', 1, NULL, 1, 2, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (12, '办公室内部文', '2025-05-27', '', '来文单位来文单位来文单位', '', '普通', '普通', NULL, '来文单位来文单位来文单位来文单位', '', '', NULL, '', 0, '存档', '', '2025-05-27 06:23:29', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 05:02:29', 1, NULL, 1, 2, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (13, '办公室内部文', '2025-05-27', '', '密件', '', '普通', '普通', NULL, '文件标题文件标题文件标题文件标题文件标题文件标题', '', '', NULL, '', 0, '存档', '', '2025-05-27 06:23:29', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 05:04:06', 1, NULL, 1, 2, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (14, '办公室内部文', '2025-05-27', '', '来文单位', '', '普通', '普通', NULL, '文件标题', '', '', NULL, '', 0, '存档', '', '2025-05-27 06:23:18', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 05:07:10', 1, NULL, 1, 2, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (15, '办公室内部文', '2025-05-27', '', '111111', '', '普通', '普通', NULL, '11111111', '', '', NULL, '', 0, '存档', '', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 08:54:43', 1, NULL, 0, 2, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (16, '办公室内部文', '2025-05-27', '2222', '22222', '22222', '普通', '普通', NULL, '22222', '', '', NULL, '222', 1, '存档', '', '2025-05-27 09:05:11', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 08:59:18', 1, NULL, 0, 2, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (17, '办公室内部文', '2025-05-27', '', '来文单位', '', '普通', '特提', NULL, '文件标题', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 09:13:14', NULL, NULL, 0, 1, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (18, '办公室内部文', '2025-05-27', '', '111111', '1111', '普通', '普通', NULL, '文件标题\n', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 09:43:00', NULL, NULL, 0, 1, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (19, '各单位来文', '2025-05-27', '', '区城管局', '', '普通', '普通', NULL, '瓦五', '', '', NULL, '大长经开管办2号', 0, '存档', '', '2025-05-27 10:09:56', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 09:54:57', 1, NULL, 0, 2, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (20, '办公室内部文', '2025-05-27', '', '1111', '', '普通', '普通', NULL, '1111111', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-05-27 13:09:42', NULL, NULL, 0, 1, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (21, '办公室内部文', '2025-07-24', '', 'aaaa', '', '普通', '普通', NULL, 'aaaaa', '', '', NULL, '', 0, '存档', '', '2025-07-24 13:40:37', '大连长兴岛经济区管委会办公室', NULL, 1, '2025-07-24 13:38:29', 1, NULL, 0, 2, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (22, '办公室内部文', '2025-07-24', '', 'aaaa', '', '普通', '普通', NULL, 'aaaaa', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-07-24 14:02:31', NULL, NULL, 0, 1, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (23, '办公室内部文', '2025-07-24', '', 'aaaaaaaa', '', '普通', '普通', NULL, 'aaaaaaaaaa', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-07-24 15:00:24', NULL, NULL, 0, 1, 2025, 1, '2025-07-24 14:57:22');
+INSERT INTO `doc_incoming_doc` VALUES (24, '办公室内部文', '2025-07-24', '', 'ggggggggggggg', '', '普通', '普通', 5, 'gggggggggggggggg', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-07-24 17:33:10', NULL, NULL, 0, 1, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (25, '办公室内部文', '2025-07-25', '', 'gggg', '', '普通', '普通', NULL, 'gggggggggg', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-07-25 15:48:40', NULL, NULL, 0, 1, 2025, 1, '2025-07-25 15:43:44');
+INSERT INTO `doc_incoming_doc` VALUES (26, '办公室内部文', '2025-07-25', '', 'gggggggggg', '', '普通', '普通', NULL, 'gggggggggggggg', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-07-25 15:51:48', NULL, NULL, 0, 1, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (27, '办公室内部文', '2025-07-25', '', 'hhhhhhhhhh', '', '普通', '普通', NULL, 'hhhhhhhhhhhhh', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', 1, 1, '2025-07-25 15:55:49', 1, '2025-07-25 16:56:04', 0, 1, 2025, 1, '2025-07-25 15:54:48');
+INSERT INTO `doc_incoming_doc` VALUES (28, '办公室内部文', '2025-07-25', '', 'jjjjjjjjjj', '', '普通', '普通', NULL, 'jjjjjjjjjjjjjj', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', 2, 1, '2025-07-25 17:26:15', NULL, NULL, 0, 1, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (29, '办公室内部文', '2025-07-25', '', 'hhhhhhhhhhhhh', '', '普通', '普通', NULL, 'hhhhhhhhhhhh', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', 3, 1, '2025-07-25 17:30:46', NULL, NULL, 0, 1, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (30, '办公室内部文', '2025-07-25', '', 'hhhhhhh', '', '普通', '普通', NULL, 'hhhhhhhhhhhh', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-07-25 17:45:57', NULL, NULL, 0, 1, 2025, 1, NULL);
+INSERT INTO `doc_incoming_doc` VALUES (31, '办公室内部文', '2025-07-29', '', '99999999999', '', '普通', '普通', NULL, '99999999999', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-07-29 13:57:17', NULL, NULL, 0, 1, 2025, 1, '2025-07-29 14:01:01');
+INSERT INTO `doc_incoming_doc` VALUES (32, '办公室内部文', '2025-07-29', '', 'kkkkkkkkkkkkk', '', '普通', '普通', NULL, 'kkkkkkkkkkkkkkk', '', '', NULL, '', 0, '未处理', '', NULL, '大连长兴岛经济区管委会办公室', NULL, 1, '2025-07-29 14:39:30', NULL, NULL, 1, 1, 2025, 1, '2025-07-29 15:00:00');
 
 -- ----------------------------
 -- Table structure for doc_incoming_opinion
 -- ----------------------------
 DROP TABLE IF EXISTS `doc_incoming_opinion`;
 CREATE TABLE `doc_incoming_opinion`  (
-  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `doc_id` int(0) NOT NULL COMMENT '关联收文表ID（incoming_doc.id）',
-  `object_id` int(0) NOT NULL COMMENT '关联流转对象ID（flow_object.id）',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `doc_id` int NOT NULL COMMENT '关联收文表ID（incoming_doc.id）',
+  `object_id` int NOT NULL COMMENT '关联流转对象ID（flow_object.id）',
   `opinion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '手写意见内容',
-  `next_object_id` int(0) NULL DEFAULT NULL COMMENT '下一流转领导ID（无则空）',
+  `next_object_id` int NULL DEFAULT NULL COMMENT '下一流转领导ID（无则空）',
   `opinion_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '意见类型（办公室拟办意见/主要领导意见等）',
-  `creator` int(0) NULL DEFAULT NULL COMMENT '创建者',
-  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `updater` int(0) UNSIGNED NULL DEFAULT NULL COMMENT '更新者',
-  `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `creator` int NULL DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updater` int UNSIGNED NULL DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '领导姓名',
   `position` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '职务（如主任、副主任）',
-  `level` int(0) NOT NULL COMMENT '级别（1-主任，2-副主任等）',
+  `level` int NOT NULL COMMENT '级别（1-主任，2-副主任等）',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_doc_id`(`doc_id`) USING BTREE COMMENT '收文ID索引'
-) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '收文审批意见表' ROW_FORMAT = Dynamic;
+  INDEX `idx_doc_id`(`doc_id` ASC) USING BTREE COMMENT '收文ID索引'
+) ENGINE = InnoDB AUTO_INCREMENT = 73 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '收文审批意见表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of doc_incoming_opinion
@@ -219,31 +253,60 @@ INSERT INTO `doc_incoming_opinion` VALUES (49, 19, 4, '222222', NULL, NULL, 1, '
 INSERT INTO `doc_incoming_opinion` VALUES (50, 20, 16, '拟办意见', NULL, '拟办意见', 1, '2025-05-27 13:09:42', NULL, NULL, '办公室', '办公室', 0);
 INSERT INTO `doc_incoming_opinion` VALUES (51, 20, 1, '流转意见', 2, NULL, 1, '2025-05-27 13:11:42', NULL, NULL, '李萍', '主任', 1);
 INSERT INTO `doc_incoming_opinion` VALUES (52, 20, 3, '分管领导', 1, NULL, 1, '2025-05-27 13:15:12', NULL, NULL, '分管领导1', '副主任', 2);
+INSERT INTO `doc_incoming_opinion` VALUES (53, 21, 16, '', NULL, '拟办意见', 1, '2025-07-24 13:38:29', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (54, 21, 1, 'aaa', 3, NULL, 1, '2025-07-24 13:39:07', NULL, NULL, '李萍', '主任', 1);
+INSERT INTO `doc_incoming_opinion` VALUES (55, 21, 3, 'bbbb', 5, NULL, 1, '2025-07-24 13:39:34', NULL, NULL, '分管领导1', '副主任', 2);
+INSERT INTO `doc_incoming_opinion` VALUES (56, 21, 5, 'aaa', NULL, NULL, 1, '2025-07-24 13:39:47', NULL, NULL, '部门1', '部门', 3);
+INSERT INTO `doc_incoming_opinion` VALUES (57, 22, 16, 'aaaaa', NULL, '拟办意见', 1, '2025-07-24 14:02:31', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (58, 23, 16, '', NULL, '拟办意见', 1, '2025-07-24 15:00:24', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (59, 24, 16, 'ggggggggggggggggg', NULL, '拟办意见', 1, '2025-07-24 17:37:39', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (65, 25, 16, 'ggggggggggggggg', NULL, '拟办意见', 1, '2025-07-25 15:48:40', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (66, 26, 16, 'ggggggggg', NULL, '拟办意见', 1, '2025-07-25 15:51:48', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (67, 27, 16, 'hhhhhhhhhhhhhhh111', NULL, '拟办意见', 1, '2025-07-25 15:55:51', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (68, 27, 3, 'hhhhhhhhhhhhhhhhhhhhhhh', 3, NULL, 1, '2025-07-25 16:57:25', NULL, NULL, '分管领导1', '副主任', 2);
+INSERT INTO `doc_incoming_opinion` VALUES (69, 28, 16, '', NULL, '拟办意见', 1, '2025-07-25 17:26:15', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (70, 29, 16, '', NULL, '拟办意见', 1, '2025-07-25 17:30:46', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (71, 30, 16, '', NULL, '拟办意见', 1, '2025-07-25 17:45:57', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (72, 31, 16, '', NULL, '拟办意见', 1, '2025-07-29 13:57:17', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_incoming_opinion` VALUES (73, 32, 16, '', NULL, '拟办意见', 1, '2025-07-29 14:39:30', NULL, NULL, '办公室', '办公室', 0);
 
 -- ----------------------------
 -- Table structure for doc_outgoing_doc
 -- ----------------------------
 DROP TABLE IF EXISTS `doc_outgoing_doc`;
 CREATE TABLE `doc_outgoing_doc`  (
-  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `sender_org` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '发文单位',
   `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件标题',
   `secret_level` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '普通' COMMENT '密级（普通/秘密/机密/绝密）',
   `archive_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '处理中' COMMENT '存档状态（处理中/存档完成）',
-  `archive_date` datetime(0) NULL DEFAULT NULL COMMENT '存档日期（存档完成时记录）',
-  `file_no` int(0) NOT NULL COMMENT '件号（4位纯数字，按年重置）',
+  `archive_date` datetime NULL DEFAULT NULL COMMENT '存档日期（存档完成时记录）',
+  `file_no` int NOT NULL COMMENT '件号（4位纯数字，按年重置）',
   `record_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '档号（扩展字段，存储年度+件号等组合信息）',
-  `creator` int(0) NULL DEFAULT NULL COMMENT '创建者',
-  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `updater` int(0) NULL DEFAULT NULL COMMENT '更新者',
-  `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `creator` int NULL DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updater` int NULL DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `limit_date` datetime NULL DEFAULT NULL COMMENT '限办时间',
+  `page_count` int NULL DEFAULT NULL COMMENT '文件页数',
+  `process_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '处理类型（下拉菜单：阅办/承办/存档等）',
+  `handling_org` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '办件单位',
+  `attachment_id` int NULL DEFAULT NULL COMMENT '附件ID（关联attachment表）文件内容（扫描版）',
+  `secret_type` int NULL DEFAULT NULL COMMENT '密件类型',
+  `sender_doc_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '发文编号',
+  `status` tinyint(1) NULL DEFAULT NULL COMMENT '状态',
+  `feedback_required` tinyint(1) NULL DEFAULT 0 COMMENT '限时反馈（0 否 1 是）',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_secret_level`(`secret_level`) USING BTREE COMMENT '密级索引'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '发文信息表' ROW_FORMAT = Dynamic;
+  INDEX `idx_secret_level`(`secret_level` ASC) USING BTREE COMMENT '密级索引'
+) ENGINE = InnoDB AUTO_INCREMENT = 17 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '发文信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of doc_outgoing_doc
 -- ----------------------------
+INSERT INTO `doc_outgoing_doc` VALUES (13, '大连长兴岛经济区管委会办公室', 'ggggggggg', '普通', '归档', '2025-07-29 16:33:37', 4, 'fw_00000001', 1, '2025-07-25 11:12:09', 1, NULL, '2025-07-25 11:12:22', 5, '发文单', 'ggggggggggggg', NULL, 0, 'gggggggggggggg', 2, 1);
+INSERT INTO `doc_outgoing_doc` VALUES (15, '大连长兴岛经济区管委会办公室', 'hhhhhhhhhhhhhh', '普通', '归档', '2025-07-25 13:18:29', 7, NULL, 1, '2025-07-25 11:16:56', 1, NULL, '2025-07-25 11:17:10', 7, '发文单', 'hhhhhhhhhhh', NULL, 0, 'hhhhhhhhhh', 2, 1);
+INSERT INTO `doc_outgoing_doc` VALUES (16, '大连长兴岛经济区管委会办公室', 'jjjjjjjjjjjjjjjjjjjjj', '普通', '处理中', NULL, 1, NULL, 1, '2025-07-29 17:19:43', NULL, NULL, '2025-07-29 18:00:00', NULL, '发文单', '', NULL, 0, 'jjjjjjjjjjjjjjjjjjjjjjjjj', 1, 0);
+INSERT INTO `doc_outgoing_doc` VALUES (17, '大连长兴岛经济区管委会办公室', 'ggggggggggggggggggg', '普通', '处理中', NULL, 1, NULL, 1, '2025-07-29 17:25:21', NULL, NULL, '2025-07-29 18:00:00', NULL, '发文单', '', NULL, 1, 'gggggggggggggggg', 1, 0);
 
 -- ----------------------------
 -- Table structure for doc_outgoing_opinion
@@ -251,37 +314,45 @@ CREATE TABLE `doc_outgoing_doc`  (
 DROP TABLE IF EXISTS `doc_outgoing_opinion`;
 CREATE TABLE `doc_outgoing_opinion`  (
   `id` int(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT COMMENT '主键ID',
-  `doc_id` int(0) NOT NULL COMMENT '关联发文表ID（outgoing_doc.id）',
-  `object_id` int(0) NOT NULL COMMENT '关联流转对象ID（flow_object.id）',
+  `doc_id` int NOT NULL COMMENT '关联发文表ID（outgoing_doc.id）',
+  `object_id` int NOT NULL COMMENT '关联流转对象ID（flow_object.id）',
   `opinion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '手写意见内容',
-  `next_object_id` bigint(0) NULL DEFAULT NULL COMMENT '下一流转领导ID（无则空）',
+  `next_object_id` bigint NULL DEFAULT NULL COMMENT '下一流转领导ID（无则空）',
   `opinion_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '意见类型（办公室拟办意见/主要领导意见等）',
-  `creator` int(0) NULL DEFAULT NULL COMMENT '创建者',
-  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `updater` int(0) NULL DEFAULT NULL COMMENT '更新者',
-  `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `creator` int NULL DEFAULT NULL COMMENT '创建者',
+  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updater` int NULL DEFAULT NULL COMMENT '更新者',
+  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '领导姓名',
+  `position` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '领导职位',
+  `level` int NULL DEFAULT NULL COMMENT '级别（1-主任，2-副主任等）',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_doc_id`(`doc_id`) USING BTREE COMMENT '发文ID索引'
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '发文审批意见表' ROW_FORMAT = Dynamic;
+  INDEX `idx_doc_id`(`doc_id` ASC) USING BTREE COMMENT '发文ID索引'
+) ENGINE = InnoDB AUTO_INCREMENT = 64 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '发文审批意见表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of doc_outgoing_opinion
 -- ----------------------------
+INSERT INTO `doc_outgoing_opinion` VALUES (0000000060, 13, 16, 'fffffffffffffff', NULL, '拟办意见', 1, '2025-07-25 10:43:18', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_outgoing_opinion` VALUES (0000000061, 15, 16, 'hhhhhhhhhhhhhjjjjjjjj', NULL, '拟办意见', 1, '2025-07-25 11:17:22', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_outgoing_opinion` VALUES (0000000062, 13, 1, 'ggggggggggg', 2, '主要领导意见', 1, '2025-07-25 13:54:35', NULL, NULL, '李萍', '主任', 1);
+INSERT INTO `doc_outgoing_opinion` VALUES (0000000063, 16, 16, '', NULL, '办公室拟办意见', 1, '2025-07-29 17:20:36', NULL, NULL, '办公室', '办公室', 0);
+INSERT INTO `doc_outgoing_opinion` VALUES (0000000064, 17, 16, '', NULL, '办公室拟办意见', 1, '2025-07-29 17:25:47', NULL, NULL, '办公室', '办公室', 0);
 
 -- ----------------------------
 -- Table structure for doc_type
 -- ----------------------------
 DROP TABLE IF EXISTS `doc_type`;
 CREATE TABLE `doc_type`  (
-  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '类型名称',
-  `creator` int(0) NULL DEFAULT NULL COMMENT '创建者ID',
-  `create_date` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
-  `updater` int(0) NULL DEFAULT NULL COMMENT '更新者ID',
-  `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `creator` int NULL DEFAULT NULL COMMENT '创建者ID',
+  `create_date` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `updater` int NULL DEFAULT NULL COMMENT '更新者ID',
+  `update_date` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `name`(`name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '来文类型表' ROW_FORMAT = Dynamic;
+  UNIQUE INDEX `name`(`name` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '来文类型表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of doc_type
@@ -297,13 +368,13 @@ INSERT INTO `doc_type` VALUES (5, '大连市人民政府办公厅', 1, '2025-05-
 -- ----------------------------
 DROP TABLE IF EXISTS `notice`;
 CREATE TABLE `notice`  (
-  `id` int(0) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `title` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT NULL COMMENT '标题',
   `content` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT NULL COMMENT '内容',
   `time` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT NULL COMMENT '创建时间',
   `user` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_unicode_ci NULL DEFAULT NULL COMMENT '创建人',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_unicode_ci COMMENT = '公告信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_unicode_ci COMMENT = '公告信息表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of notice
@@ -313,19 +384,44 @@ INSERT INTO `notice` VALUES (2, '所有功能都已完成，可以正常使用',
 INSERT INTO `notice` VALUES (3, '今天天气很不错，可以出去一起玩了', '今天天气很不错，可以出去一起玩了', '2023-09-05', 'admin');
 
 -- ----------------------------
+-- Table structure for reminder_settings
+-- ----------------------------
+DROP TABLE IF EXISTS `reminder_settings`;
+CREATE TABLE `reminder_settings`  (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+  `user_id` int NOT NULL COMMENT '用户id',
+  `remind_before_value` int NOT NULL COMMENT '提前提醒数',
+  `updated_time` datetime NULL DEFAULT NULL COMMENT '最后更新时间',
+  `status` int NOT NULL DEFAULT 0 COMMENT '状态',
+  `created_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提醒名称',
+  `remind_before_unit` enum('minutes','hours','days','months') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'minutes' COMMENT '提前提醒的单位（分钟、小时、天、月）',
+  `limit_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '提醒类型（收文/发文）',
+  `doc_type` tinyint(1) NOT NULL COMMENT '文档类型（普通/密件）',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of reminder_settings
+-- ----------------------------
+INSERT INTO `reminder_settings` VALUES (2, 1, 30, '2025-07-28 16:04:28', 0, '2025-07-28 15:22:12', 'jjjjjjjjjjjjjjjj', 'hours', 'INCOMING_DOC', 0);
+INSERT INTO `reminder_settings` VALUES (5, 1, 30, NULL, 0, '2025-07-28 17:01:40', 'gggggggggggggg', 'minutes', 'OUTGOING_DOC', 1);
+INSERT INTO `reminder_settings` VALUES (6, 1, 30, NULL, 0, '2025-07-28 17:03:39', 'yyyyyyyyyyy', 'minutes', 'INCOMING_DOC', 1);
+
+-- ----------------------------
 -- Table structure for ureport_file_tbl
 -- ----------------------------
 DROP TABLE IF EXISTS `ureport_file_tbl`;
 CREATE TABLE `ureport_file_tbl`  (
-  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键ID',
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '模板名称',
   `content` mediumblob NULL COMMENT '模板内容',
   `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '创建者',
-  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '更新者',
-  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '档案报表模板表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 42 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '档案报表模板表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of ureport_file_tbl
@@ -340,9 +436,29 @@ INSERT INTO `ureport_file_tbl` VALUES (41, '收文报表单.ureport.xml', 0x3C3F
 INSERT INTO `ureport_file_tbl` VALUES (42, '收发文新系统.ureport.xml', 0x3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D225554462D38223F3E3C757265706F72743E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2241312220726F773D22312220636F6C3D2231223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2242312220726F773D22312220636F6C3D22322220636F6C2D7370616E3D2234223E3C63656C6C2D7374796C6520666F6E742D73697A653D2232332220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415BE5A4A720E8BF9E20E995BF20E585B420E5B29B20E7BB8F20E6B58E20E58CBA20E7AEA120E5A79420E4BC9A20E58A9E20E585AC20E5AEA40A20E694B620202020202020202020E6968720202020202020202020E5A48420202020202020202020E7908620202020202020202020E58D950A5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2246312220726F773D22312220636F6C3D2236223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2241322220726F773D22322220636F6C3D2231223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2242322220726F773D22322220636F6C3D2232223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2243322220726F773D22322220636F6C3D2233223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2244322220726F773D22322220636F6C3D2234223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2245322220726F773D22322220636F6C3D2235223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2246322220726F773D22322220636F6C3D2236223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2241332220726F773D22332220636F6C3D2231223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2242332220726F773D22332220636F6C3D2232223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D22626F74746F6D223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415BE69DA5E69687E58D95E4BD8DEFBC9A5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D22446F776E22206E616D653D2243332220726F773D22332220636F6C3D2233223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D22626F74746F6D223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C646174617365742D76616C756520646174617365742D6E616D653D22E694B6E58F91E69687E695B0E68DAEE99B8622206167677265676174653D2273656C656374222070726F70657274793D22E69DA5E69687E58D95E4BD8D22206F726465723D226E6F6E6522206D617070696E672D747970653D2273696D706C65223E3C2F646174617365742D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2244332220726F773D22332220636F6C3D2234223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D22626F74746F6D223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415BE694B6E69687E697B6E997B4EFBC9A5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2245332220726F773D22332220636F6C3D2235223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D22626F74746F6D223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C646174617365742D76616C756520646174617365742D6E616D653D22E694B6E58F91E69687E695B0E68DAEE99B8622206167677265676174653D2273656C656374222070726F70657274793D22E694B6E69687E697B6E997B422206F726465723D226E6F6E6522206D617070696E672D747970653D2273696D706C65223E3C2F646174617365742D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2246332220726F773D22332220636F6C3D2236223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2241342220726F773D22342220636F6C3D2231223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2242342220726F773D22342220636F6C3D2232223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D22626F74746F6D223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415BE69DA5E69687E7BC96E58FB7EFBC9A5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2243342220726F773D22342220636F6C3D2233223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D22626F74746F6D223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C646174617365742D76616C756520646174617365742D6E616D653D22E694B6E58F91E69687E695B0E68DAEE99B8622206167677265676174653D2273656C656374222070726F70657274793D22E69DA5E69687E7BC96E58FB722206F726465723D226E6F6E6522206D617070696E672D747970653D2273696D706C65223E3C2F646174617365742D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2244342220726F773D22342220636F6C3D2234223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D22626F74746F6D223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415BE69687E4BBB6E5AF86E7BAA7EFBC9A5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2245342220726F773D22342220636F6C3D2235223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D22626F74746F6D223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C646174617365742D76616C756520646174617365742D6E616D653D22E694B6E58F91E69687E695B0E68DAEE99B8622206167677265676174653D2273656C656374222070726F70657274793D22E69687E4BBB6E5AF86E7BAA722206F726465723D226E6F6E6522206D617070696E672D747970653D2273696D706C65223E3C2F646174617365742D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2246342220726F773D22342220636F6C3D2236223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2241352220726F773D22352220636F6C3D2231223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2242352220726F773D22352220636F6C3D2232223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C72696768742D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415BE69687E4BBB6E6A087E9A2985D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2243352220726F773D22352220636F6C3D22332220636F6C2D7370616E3D2233223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C646174617365742D76616C756520646174617365742D6E616D653D22E694B6E58F91E69687E695B0E68DAEE99B8622206167677265676174653D2273656C656374222070726F70657274793D22E69687E4BBB6E6A087E9A29822206F726465723D226E6F6E6522206D617070696E672D747970653D2273696D706C65223E3C2F646174617365742D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2246352220726F773D22352220636F6C3D2236223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2241362220726F773D22362220636F6C3D2231223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2242362220726F773D22362220636F6C3D2232223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C72696768742D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415BE58A9E20E585AC20E5AEA40AE68B9FE58A9EE6848FE8A7815D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2243362220726F773D22362220636F6C3D22332220636F6C2D7370616E3D2233223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C646174617365742D76616C756520646174617365742D6E616D653D22E694B6E58F91E69687E695B0E68DAEE99B8622206167677265676174653D2273656C656374222070726F70657274793D22E58A9EE585ACE5AEA4E68B9FE58A9EE6848FE8A78122206F726465723D226E6F6E6522206D617070696E672D747970653D2273696D706C65223E3C2F646174617365742D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2246362220726F773D22362220636F6C3D2236223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2241372220726F773D22372220636F6C3D2231223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2242372220726F773D22372220636F6C3D2232223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C72696768742D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415BE4B8BBE8A681E9A286E5AFBC0AE6848F2020E8A7815D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2243372220726F773D22372220636F6C3D22332220636F6C2D7370616E3D2233223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C646174617365742D76616C756520646174617365742D6E616D653D22E694B6E58F91E69687E695B0E68DAEE99B8622206167677265676174653D2273656C656374222070726F70657274793D22E4B8BBE8A681E9A286E5AFBCE6848FE8A78122206F726465723D226E6F6E6522206D617070696E672D747970653D2273696D706C65223E3C2F646174617365742D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2246372220726F773D22372220636F6C3D2236223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2241382220726F773D22382220636F6C3D2231223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2242382220726F773D22382220636F6C3D2232223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C72696768742D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415BE58886E7AEA1E9A286E5AFBC0AE6848F2020E8A7815D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2243382220726F773D22382220636F6C3D22332220636F6C2D7370616E3D2233223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C646174617365742D76616C756520646174617365742D6E616D653D22E694B6E58F91E69687E695B0E68DAEE99B8622206167677265676174653D2273656C656374222070726F70657274793D22E58886E7AEA1E9A286E5AFBCE6848FE8A78122206F726465723D226E6F6E6522206D617070696E672D747970653D2273696D706C65223E3C2F646174617365742D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2246382220726F773D22382220636F6C3D2236223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2241392220726F773D22392220636F6C3D2231223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2242392220726F773D22392220636F6C3D2232223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C72696768742D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415BE983A8E997A8E6848FE8A7815D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2243392220726F773D22392220636F6C3D22332220636F6C2D7370616E3D2233223E3C63656C6C2D7374796C6520666F6E742D73697A653D2231352220666F7265636F6C6F723D22302C302C302220666F6E742D66616D696C793D22E5AE8BE4BD932220626F6C643D2266616C73652220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C746F702D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C626F74746F6D2D626F726465722077696474683D223122207374796C653D22736F6C69642220636F6C6F723D22302C302C30222F3E3C2F63656C6C2D7374796C653E3C646174617365742D76616C756520646174617365742D6E616D653D22E694B6E58F91E69687E695B0E68DAEE99B8622206167677265676174653D2273656C656374222070726F70657274793D22E983A8E997A8E6848FE8A78122206F726465723D226E6F6E6522206D617070696E672D747970653D2273696D706C65223E3C2F646174617365742D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D2246392220726F773D22392220636F6C3D2236223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D224131302220726F773D2231302220636F6C3D2231223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D224231302220726F773D2231302220636F6C3D2232223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D224331302220726F773D2231302220636F6C3D2233223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D223235352C3235352C32353522206267636F6C6F723D223235352C3235352C3235352220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D224431302220726F773D2231302220636F6C3D2234223E3C63656C6C2D7374796C6520666F6E742D73697A653D22312220666F7265636F6C6F723D223235352C3235352C32353522206267636F6C6F723D223235352C3235352C3235352220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C646174617365742D76616C756520646174617365742D6E616D653D22E694B6E58F91E69687E695B0E68DAEE99B8622206167677265676174653D2273656C656374222070726F70657274793D22E694B6E69687494422206F726465723D226E6F6E6522206D617070696E672D747970653D2273696D706C65223E3C2F646174617365742D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D224531302220726F773D2231302220636F6C3D2235223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C7A78696E672D76616C756520736F757263653D2265787072657373696F6E222063617465676F72793D22626172636F6465222077696474683D2233303022206865696768743D2237342220666F726D61743D225044465F343137223E3C746578743E3C215B43444154415B4431305D5D3E3C2F746578743E3C2F7A78696E672D76616C75653E3C2F63656C6C3E3C63656C6C20657870616E643D224E6F6E6522206E616D653D224631302220726F773D2231302220636F6C3D2236223E3C63656C6C2D7374796C6520666F6E742D73697A653D22392220666F7265636F6C6F723D22302C302C302220616C69676E3D2263656E746572222076616C69676E3D226D6964646C65223E3C2F63656C6C2D7374796C653E3C73696D706C652D76616C75653E3C215B43444154415B5D5D3E3C2F73696D706C652D76616C75653E3C2F63656C6C3E3C726F7720726F772D6E756D6265723D223122206865696768743D223533222F3E3C726F7720726F772D6E756D6265723D223222206865696768743D223134222F3E3C726F7720726F772D6E756D6265723D223322206865696768743D223431222F3E3C726F7720726F772D6E756D6265723D223422206865696768743D223431222F3E3C726F7720726F772D6E756D6265723D223522206865696768743D22313136222F3E3C726F7720726F772D6E756D6265723D223622206865696768743D223833222F3E3C726F7720726F772D6E756D6265723D223722206865696768743D22313035222F3E3C726F7720726F772D6E756D6265723D223822206865696768743D22313035222F3E3C726F7720726F772D6E756D6265723D223922206865696768743D223638222F3E3C726F7720726F772D6E756D6265723D22313022206865696768743D223431222F3E3C636F6C756D6E20636F6C2D6E756D6265723D2231222077696474683D223135222F3E3C636F6C756D6E20636F6C2D6E756D6265723D2232222077696474683D223833222F3E3C636F6C756D6E20636F6C2D6E756D6265723D2233222077696474683D22323333222F3E3C636F6C756D6E20636F6C2D6E756D6265723D2234222077696474683D223833222F3E3C636F6C756D6E20636F6C2D6E756D6265723D2235222077696474683D22313530222F3E3C636F6C756D6E20636F6C2D6E756D6265723D2236222077696474683D223135222F3E3C64617461736F75726365206E616D653D22E694B6E58F91E696872220747970653D226A6462632220757365726E616D653D22726F6F74222070617373776F72643D22313233343536222075726C3D226A6462633A6D7973716C3A2F2F3132372E302E302E313A333330362F61726368697665735F6F6666696369616C646F633F757365556E69636F64653D7472756526616D703B636861726163746572456E636F64696E673D7574663826616D703B7A65726F4461746554696D654265686176696F723D636F6E76657274546F4E756C6C26616D703B75736553534C3D7472756526616D703B73657276657254696D657A6F6E653D474D542532423822206472697665723D22636F6D2E6D7973716C2E636A2E6A6462632E447269766572223E3C64617461736574206E616D653D22E694B6E58F91E69687E695B0E68DAEE99B862220747970653D2273716C223E3C73716C3E3C215B43444154415B53454C4543540A20202020642E696420415320E694B6E6968749442C0A20202020642E73656E6465725F6F726720415320E69DA5E69687E58D95E4BD8D2C0A20202020444154455F464F524D415428642E726563656976655F646174652C202725592F256D2F2564272920415320E694B6E69687E697B6E997B42C0A20202020642E73656E6465725F646F635F6E6F20415320E69DA5E69687E7BC96E58FB72C0A20202020642E7365637265745F6C6576656C20415320E69687E4BBB6E5AF86E7BAA72C0A20202020642E7469746C6520415320E69687E4BBB6E6A087E9A2982C0A202020202D2D20E58A9EE585ACE5AEA4E68B9FE58A9EE6848FE8A781EFBC88E594AFE4B880EFBC8CE9809AE8BF876F626A6563745F69643D3136E5AE9AE4BD8DEFBC890A202020206F5F6F70696E696F6E2E6F70696E696F6E20415320E58A9EE585ACE5AEA4E68B9FE58A9EE6848FE8A7812C0A202020202D2D20E4B8BBE8A681E9A286E5AFBCE6848FE8A781EFBC88E7BAA7E588AB31EFBC8CE58F96E69C80E696B0E4B880E69DA1EFBC890A202020204D41582843415345205748454E20666F2E6C6576656C203D2031205448454E206D5F6F70696E696F6E2E6F70696E696F6E20454E442920415320E4B8BBE8A681E9A286E5AFBCE6848FE8A7812C0A202020202D2D20E58886E7AEA1E9A286E5AFBCE6848FE8A781EFBC88E7BAA7E588AB32EFBC8CE59088E5B9B6E5A49AE4BABAE6848FE8A781EFBC890A2020202047524F55505F434F4E4341542844495354494E435420434F4E43415428666F2E6E616D652C2027EFBC9A272C20645F6F70696E696F6E2E6F70696E696F6E29204F5244455220425920645F6F70696E696F6E2E6372656174655F646174652020534550415241544F522027EFBC9B272920415320E58886E7AEA1E9A286E5AFBCE6848FE8A7812C0A202020202D2D20E983A8E997A8E6848FE8A781EFBC88E7BAA7E588AB33EFBC8CE59088E5B9B6E5A49AE983A8E997A8E6848FE8A781EFBC890A2020202047524F55505F434F4E4341542844495354494E435420434F4E43415428666F2E6E616D652C2027EFBC9A272C20646570745F6F70696E696F6E2E6F70696E696F6E29204F5244455220425920646570745F6F70696E696F6E2E6372656174655F646174652020534550415241544F522027EFBC9B272920415320E983A8E997A8E6848FE8A7810A46524F4D0A20202020646F635F696E636F6D696E675F646F6320640A202020202D2D20E585B3E88194E58A9EE585ACE5AEA4E68B9FE58A9EE6848FE8A781EFBC88E59BBAE5AE9A49443D3136EFBC890A202020204C454654204A4F494E20646F635F696E636F6D696E675F6F70696E696F6E206F5F6F70696E696F6E200A20202020202020204F4E20642E6964203D206F5F6F70696E696F6E2E646F635F6964200A2020202020202020414E44206F5F6F70696E696F6E2E6F626A6563745F6964203D203136200A2020202020202020414E44206F5F6F70696E696F6E2E6F70696E696F6E5F74797065203D2027E68B9FE58A9EE6848FE8A781270A202020202D2D20E585B3E88194E68980E69C89E5AEA1E689B9E6848FE8A781EFBC88E58C85E68BACE59084E7BAA7E9A286E5AFBCEFBC890A202020204C454654204A4F494E20646F635F696E636F6D696E675F6F70696E696F6E20616C6C5F6F70696E696F6E73200A20202020202020204F4E20642E6964203D20616C6C5F6F70696E696F6E732E646F635F69640A202020202D2D20E585B3E88194E6B581E8BDACE5AFB9E8B1A1E8A1A8E88EB7E58F96E9A286E5AFBCE4BFA1E681AF0A202020204C454654204A4F494E20646F635F666C6F775F6F626A65637420666F200A20202020202020204F4E20616C6C5F6F70696E696F6E732E6F626A6563745F6964203D20666F2E69640A202020202D2D20E68B86E58886E4B8BBE8A681E9A286E5AFBCE6848FE8A781EFBC88E7BAA7E588AB31EFBC890A202020204C454654204A4F494E20646F635F696E636F6D696E675F6F70696E696F6E206D5F6F70696E696F6E200A20202020202020204F4E20642E6964203D206D5F6F70696E696F6E2E646F635F6964200A2020202020202020414E4420666F2E6C6576656C203D2031200A2020202020202020414E44206D5F6F70696E696F6E2E6F626A6563745F6964203D20666F2E69640A202020202D2D20E68B86E58886E58886E7AEA1E9A286E5AFBCE6848FE8A781EFBC88E7BAA7E588AB32EFBC890A202020204C454654204A4F494E20646F635F696E636F6D696E675F6F70696E696F6E20645F6F70696E696F6E200A20202020202020204F4E20642E6964203D20645F6F70696E696F6E2E646F635F6964200A2020202020202020414E4420666F2E6C6576656C203D2032200A2020202020202020414E4420645F6F70696E696F6E2E6F626A6563745F6964203D20666F2E69640A202020202D2D20E68B86E58886E983A8E997A8E6848FE8A781EFBC88E7BAA7E588AB33EFBC890A202020204C454654204A4F494E20646F635F696E636F6D696E675F6F70696E696F6E20646570745F6F70696E696F6E200A20202020202020204F4E20642E6964203D20646570745F6F70696E696F6E2E646F635F6964200A2020202020202020414E4420666F2E6C6576656C203D2033200A2020202020202020414E4420646570745F6F70696E696F6E2E6F626A6563745F6964203D20666F2E69640A574845524520642E6964203D203A6964730A47524F55502042590A20202020642E69642C20642E73656E6465725F6F72672C20642E726563656976655F646174652C20642E73656E6465725F646F635F6E6F2C20642E7365637265745F6C6576656C2C20642E7469746C652C206F5F6F70696E696F6E2E6F70696E696F6E0A4F524445522042590A20202020642E6372656174655F6461746520444553433B5D5D3E3C2F73716C3E3C6669656C64206E616D653D22E694B6E696874944222F3E3C6669656C64206E616D653D22E69DA5E69687E58D95E4BD8D222F3E3C6669656C64206E616D653D22E694B6E69687E697B6E997B4222F3E3C6669656C64206E616D653D22E69DA5E69687E7BC96E58FB7222F3E3C6669656C64206E616D653D22E69687E4BBB6E5AF86E7BAA7222F3E3C6669656C64206E616D653D22E69687E4BBB6E6A087E9A298222F3E3C6669656C64206E616D653D22E58A9EE585ACE5AEA4E68B9FE58A9EE6848FE8A781222F3E3C6669656C64206E616D653D22E4B8BBE8A681E9A286E5AFBCE6848FE8A781222F3E3C6669656C64206E616D653D22E58886E7AEA1E9A286E5AFBCE6848FE8A781222F3E3C6669656C64206E616D653D22E983A8E997A8E6848FE8A781222F3E3C706172616D65746572206E616D653D226964732220747970653D22496E7465676572222064656661756C742D76616C75653D2237222F3E3C2F646174617365743E3C2F64617461736F757263653E3C706170657220747970653D22413422206C6566742D6D617267696E3D2239222072696768742D6D617267696E3D2239220A20202020746F702D6D617267696E3D2237322220626F74746F6D2D6D617267696E3D2237322220706167696E672D6D6F64653D22666974706167652220666978726F77733D2230220A2020202077696474683D2235393522206865696768743D2238343222206F7269656E746174696F6E3D22706F727472616974222068746D6C2D7265706F72742D616C69676E3D226C656674222062672D696D6167653D22222068746D6C2D696E74657276616C2D726566726573682D76616C75653D22302220636F6C756D6E2D656E61626C65643D2266616C7365223E3C2F70617065723E3C7365617263682D666F726D20666F726D2D706F736974696F6E3D227570222F3E3C2F757265706F72743E, NULL, '2025-05-27 01:25:14', NULL, '2025-05-27 01:50:10');
 
 -- ----------------------------
--- View structure for comprehensive_score
+-- Procedure structure for get_doc_id
 -- ----------------------------
-DROP VIEW IF EXISTS `comprehensive_score`;
-CREATE ALGORITHM = UNDEFINED SQL SECURITY DEFINER VIEW `comprehensive_score` AS select `a`.`id` AS `student_id`,`a`.`name` AS `student_name`,`c`.`id` AS `class_id`,substr(`c`.`class_name`,1,4) AS `enrollmentyear`,`er`.`counselor_id` AS `counselor_id`,`b`.`name` AS `counselor_name`,`c`.`class_name` AS `class_name`,`er`.`semester` AS `semester`,sum((case when ((`ed`.`dimension_name` = '德') and (`erd`.`status` = '已通过')) then `erd`.`score` else 0 end)) AS `moral_score`,sum((case when ((`ed`.`dimension_name` = '智') and (`erd`.`status` = '已通过')) then `erd`.`score` else 0 end)) AS `intellectual_score`,sum((case when ((`ed`.`dimension_name` = '体') and (`erd`.`status` = '已通过')) then `erd`.`score` else 0 end)) AS `physical_score`,sum((case when ((`ed`.`dimension_name` = '美') and (`erd`.`status` = '已通过')) then `erd`.`score` else 0 end)) AS `aesthetic_score`,sum((case when ((`ed`.`dimension_name` = '劳') and (`erd`.`status` = '已通过')) then `erd`.`score` else 0 end)) AS `labor_score`,sum((case when (`erd`.`status` = '已通过') then `erd`.`score` else 0 end)) AS `moral_action_score`,(sum((case when (`co`.`semester` = `er`.`semester`) then ((((`cr`.`usual_score` * 0.2) + (`cr`.`experiment_score` * 0.2)) + (`cr`.`final_score` * 0.6)) * `co`.`credits`) else 0 end)) / nullif(sum((case when (`co`.`semester` = `er`.`semester`) then `co`.`credits` else 0 end)),0)) AS `year_average_score`,(((sum((case when (`co`.`semester` = `er`.`semester`) then ((((`cr`.`usual_score` * 0.2) + (`cr`.`experiment_score` * 0.2)) + (`cr`.`final_score` * 0.6)) * `co`.`credits`) else 0 end)) / nullif(sum((case when (`co`.`semester` = `er`.`semester`) then `co`.`credits` else 0 end)),0)) * 0.8) + (sum((case when (`erd`.`status` = '已通过') then `erd`.`score` else 0 end)) * 0.2)) AS `total_score` from (((((((`admin` `a` join `class_info` `c` on((`a`.`class_id` = `c`.`id`))) join `evaluation_rating_detail` `erd` on((`a`.`id` = `erd`.`student_id`))) join `evaluation_dimension` `ed` on((`erd`.`dimension_id` = `ed`.`id`))) join `evaluation_rating_task` `er` on((`erd`.`task_id` = `er`.`id`))) join `admin` `b` on(((`b`.`role` = 'COUNSELOR') and (`b`.`id` = `er`.`counselor_id`)))) left join `course_rating_detail` `cr` on((`a`.`id` = `cr`.`student_id`))) left join `course` `co` on((`cr`.`course_id` = `co`.`id`))) where (`a`.`role` = 'STUDENT') group by `a`.`id`,`er`.`semester`,`er`.`counselor_id`;
+DROP PROCEDURE IF EXISTS `get_doc_id`;
+delimiter ;;
+CREATE PROCEDURE `get_doc_id`(IN invalue varchar(8),OUT rsvalue varchar(32))
+BEGIN
+	DECLARE ocode VARCHAR(8) DEFAULT '';
+	DECLARE rtvalue VARCHAR(32) DEFAULT 'X';
+	DECLARE onvalue INT(11) DEFAULT 0;
+	DECLARE nnvalue INT(11) DEFAULT 0;
+	START TRANSACTION;
+  SELECT id,nvalue INTO ocode,onvalue FROM doc_archive_no WHERE id=invalue FOR UPDATE;
+	IF (ocode = '') THEN
+	 SET rtvalue='X';
+  ELSE
+	 SET nnvalue=onvalue+1;
+	 UPDATE doc_archive_no SET nvalue=nnvalue WHERE id=invalue;
+	 SET rtvalue=CONCAT(ocode,'_',LPAD(nnvalue,8,'0'));
+  END IF;
+  COMMIT;	
+	SELECT rtvalue INTO rsvalue;
+END
+;;
+delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;
